@@ -6,6 +6,16 @@ import { generateMockScore } from '../src/lib/signals/mock/aggregator'
 
 const prisma = new PrismaClient()
 
+// Type for CSV record
+interface CSVRecord {
+  title?: string
+  description?: string
+  category?: string
+  date?: string
+  revenue_projection?: string
+  [key: string]: string | undefined
+}
+
 // Helper to create slug from title
 function createSlug(title: string): string {
   return title
@@ -85,7 +95,7 @@ async function importCSV() {
     columns: true,
     skip_empty_lines: true,
     trim: true
-  })
+  }) as CSVRecord[]
 
   console.log(`Found ${records.length} ideas in CSV`)
 
