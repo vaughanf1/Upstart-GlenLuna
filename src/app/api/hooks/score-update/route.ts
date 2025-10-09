@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
       where: { id: data.ideaId },
       data: {
         score: data.score,
-        scoreBreakdown: data.breakdown,
-        sources: data.sources || [],
+        scoreBreakdown: JSON.stringify(data.breakdown),
+        sources: JSON.stringify(data.sources || []),
         lastScoredAt: new Date(),
       },
     })
@@ -35,13 +35,13 @@ export async function POST(request: NextRequest) {
       data: {
         level: 'info',
         message: `Score updated via webhook for idea: ${idea.title}`,
-        data: {
+        data: JSON.stringify({
           ideaId: data.ideaId,
           oldScore: idea.score,
           newScore: data.score,
           method: 'n8n-webhook',
           breakdown: data.breakdown,
-        },
+        }),
       },
     })
 
@@ -59,10 +59,9 @@ export async function POST(request: NextRequest) {
       data: {
         level: 'error',
         message: 'Failed to update score via webhook',
-        data: {
+        data: JSON.stringify({
           error: error instanceof Error ? error.message : 'Unknown error',
-          body: request.body,
-        },
+        }),
       },
     }).catch(() => {}) // Ignore if logging fails
 

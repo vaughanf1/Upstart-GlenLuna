@@ -67,19 +67,19 @@ export async function GET() {
     const bookmarkedIds = new Set(bookmarks.map(b => b.ideaId))
 
     // Return top 12 matches with fit scores
-    const matches = rankedIdeas.slice(0, 12).map(idea => ({
-      id: idea.id,
-      slug: idea.slug,
-      title: idea.title,
-      summary: idea.summary,
-      difficulty: idea.difficulty,
-      buildType: idea.buildType,
-      tags: idea.tags,
-      score: idea.score,
-      createdAt: idea.createdAt.toISOString(),
-      fitScore: idea.fitScore,
-      fitReason: idea.fitReason,
-      isBookmarked: bookmarkedIds.has(idea.id),
+    const matches = rankedIdeas.slice(0, 12).map((ideaMatch: any) => ({
+      id: ideaMatch.id,
+      slug: ideaMatch.slug,
+      title: ideaMatch.title,
+      summary: ideaMatch.summary,
+      difficulty: ideaMatch.difficulty,
+      buildType: ideaMatch.buildType,
+      tags: ideaMatch.tags,
+      score: ideaMatch.score,
+      createdAt: ideaMatch.createdAt.toISOString(),
+      fitScore: ideaMatch.fitScore,
+      fitReason: ideaMatch.fitReason,
+      isBookmarked: bookmarkedIds.has(ideaMatch.id),
     }))
 
     return NextResponse.json({ matches })

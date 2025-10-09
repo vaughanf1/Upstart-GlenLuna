@@ -68,7 +68,7 @@ export async function POST(
       // Use local scoring (mock or real based on DATA_MODE env var)
       const scoringResult = await generateScore(idea.slug, {
         title: idea.title,
-        tags: idea.tags,
+        tags: JSON.parse(idea.tags as string) as string[],
         problem: idea.problem,
         solution: idea.solution,
         targetUser: idea.targetUser || undefined,
@@ -80,8 +80,8 @@ export async function POST(
         where: { id: idea.id },
         data: {
           score: scoringResult.score,
-          scoreBreakdown: scoringResult.breakdown,
-          sources: scoringResult.sources,
+          scoreBreakdown: JSON.stringify(scoringResult.breakdown),
+          sources: JSON.stringify(scoringResult.sources),
           lastScoredAt: new Date(),
         },
       })
@@ -91,12 +91,12 @@ export async function POST(
         data: {
           level: 'info',
           message: `Score refreshed for idea: ${idea.title}`,
-          data: {
+          data: JSON.stringify({
             ideaId: idea.id,
             oldScore: idea.score,
             newScore: scoringResult.score,
             method: process.env.DATA_MODE === 'real' ? 'local-real' : 'local-mock',
-          },
+          }),
         },
       })
 

@@ -83,7 +83,7 @@ export async function generateMockScore(slug: string, metrics: IdeaMetrics): Pro
     sources.push({
       type: 'reddit',
       url: `https://reddit.com/search?q=${encodeURIComponent(metrics.title)}`,
-      meta: { mentions: communityData.redditMentions, engagement: communityData.redditEngagement }
+      meta: { mentions: communityData.redditMentions, engagement: communityData.redditEngagement } as any
     })
   }
 
@@ -91,7 +91,7 @@ export async function generateMockScore(slug: string, metrics: IdeaMetrics): Pro
     sources.push({
       type: 'hackernews',
       url: `https://hn.algolia.com/?q=${encodeURIComponent(metrics.title)}`,
-      meta: { mentions: communityData.hnMentions, engagement: communityData.hnEngagement }
+      meta: { mentions: communityData.hnMentions, engagement: communityData.hnEngagement } as any
     })
   }
 
@@ -99,7 +99,7 @@ export async function generateMockScore(slug: string, metrics: IdeaMetrics): Pro
     sources.push({
       type: 'news',
       url: `https://news.google.com/search?q=${encodeURIComponent(metrics.title)}`,
-      meta: { volume: newsData.volume, recency: newsData.recencyFactor }
+      meta: { volume: newsData.volume, recency: newsData.recencyFactor } as any
     })
   }
 
@@ -107,7 +107,7 @@ export async function generateMockScore(slug: string, metrics: IdeaMetrics): Pro
     sources.push({
       type: 'competition',
       url: `https://www.crunchbase.com/discover/organization.companies/field/categories/name/${encodeURIComponent(metrics.title)}`,
-      meta: { competitors: competitionData.competitors.slice(0, 3), total: competitionData.competitorCount }
+      meta: { competitors: competitionData.competitors.slice(0, 3), total: competitionData.competitorCount } as any
     })
   }
 

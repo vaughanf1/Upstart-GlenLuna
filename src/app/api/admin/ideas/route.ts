@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
       data: {
         ...data,
         slug,
+        tags: JSON.stringify(data.tags),
       }
     })
 
@@ -48,11 +49,11 @@ export async function POST(request: NextRequest) {
       data: {
         level: 'info',
         message: `New idea created: ${idea.title}`,
-        data: {
+        data: JSON.stringify({
           ideaId: idea.id,
           userId: session.user.id,
           action: 'create_idea',
-        },
+        }),
       },
     })
 

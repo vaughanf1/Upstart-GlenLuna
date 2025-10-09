@@ -68,7 +68,7 @@ export class RedditClient {
     this.accessToken = data.access_token
     this.tokenExpiry = Date.now() + (data.expires_in * 1000)
 
-    return this.accessToken
+    return this.accessToken!
   }
 
   async search(query: string, timeRange: 'day' | 'week' | 'month' | 'year' | 'all' = 'year'): Promise<APIResponse<RedditSearchResult>> {

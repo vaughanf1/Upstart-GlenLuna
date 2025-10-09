@@ -42,7 +42,11 @@ async function getIdeas(searchParams: { search?: string; filter?: string }) {
 }
 
 async function IdeasTable({ searchParams }: { searchParams: { search?: string; filter?: string } }) {
-  const ideas = await getIdeas(searchParams)
+  const rawIdeas = await getIdeas(searchParams)
+  const ideas = rawIdeas.map(idea => ({
+    ...idea,
+    tags: JSON.parse(idea.tags as string) as string[]
+  }))
 
   if (ideas.length === 0) {
     return (
