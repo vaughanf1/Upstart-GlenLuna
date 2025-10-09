@@ -5,6 +5,10 @@ import { authOptions } from '@/lib/auth'
 import { createIdeaSchema } from '@/lib/validations/idea'
 import { slugify } from '@/lib/utils'
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
