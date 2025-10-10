@@ -86,28 +86,28 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/ideas" className="flex items-center text-gray-600 hover:text-gray-900 text-sm sm:text-base">
-              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+      <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50 w-full">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-8 w-full">
+          <div className="flex items-center justify-between h-14 sm:h-16 w-full">
+            <Link href="/ideas" className="flex items-center text-gray-600 hover:text-gray-900 text-xs sm:text-sm md:text-base flex-shrink-0">
+              <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 mr-1 sm:mr-2" />
               <span className="hidden xs:inline">Back to </span>Ideas
             </Link>
-            <div className="flex items-center space-x-1 sm:space-x-2">
-              <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-                <Share2 className="w-4 h-4 mr-1" />
+            <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+              <Button variant="outline" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm">
+                <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" />
                 Share
               </Button>
-              <Button variant="outline" size="sm" className="hidden sm:inline-flex">
-                <Bookmark className="w-4 h-4 mr-1" />
+              <Button variant="outline" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm">
+                <Bookmark className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" />
                 Bookmark
               </Button>
               {/* Mobile - Icon only */}
-              <Button variant="outline" size="sm" className="sm:hidden px-2">
-                <Share2 className="w-4 h-4" />
+              <Button variant="outline" size="sm" className="sm:hidden px-1.5 h-8">
+                <Share2 className="w-3.5 h-3.5" />
               </Button>
-              <Button variant="outline" size="sm" className="sm:hidden px-2">
-                <Bookmark className="w-4 h-4" />
+              <Button variant="outline" size="sm" className="sm:hidden px-1.5 h-8">
+                <Bookmark className="w-3.5 h-3.5" />
               </Button>
             </div>
           </div>

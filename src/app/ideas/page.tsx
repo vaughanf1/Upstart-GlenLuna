@@ -120,19 +120,20 @@ export default function IdeasPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center text-gray-600 hover:text-gray-900 text-sm sm:text-base">
-              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+      <header className="bg-white border-b w-full">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 w-full">
+          <div className="flex items-center justify-between h-14 sm:h-16 w-full">
+            <Link href="/" className="flex items-center text-gray-600 hover:text-gray-900 text-xs sm:text-sm md:text-base flex-shrink-0">
+              <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 mr-1 sm:mr-2" />
               <span className="hidden xs:inline">Back to </span>Home
             </Link>
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <div className="hidden sm:flex items-center space-x-2 border rounded-lg">
+            <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-4">
+              <div className="hidden sm:flex items-center space-x-1 sm:space-x-2 border rounded-lg">
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => setViewMode('grid')}
+                  className="px-2"
                 >
                   <Grid className="w-4 h-4" />
                 </Button>
@@ -140,15 +141,16 @@ export default function IdeasPage() {
                   variant={viewMode === 'list' ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => setViewMode('list')}
+                  className="px-2"
                 >
                   <List className="w-4 h-4" />
                 </Button>
               </div>
               <Link href="/auth/signin" className="hidden sm:inline-block">
-                <Button>Sign In</Button>
+                <Button size="sm">Sign In</Button>
               </Link>
               <Link href="/auth/signin" className="sm:hidden">
-                <Button size="sm">Sign In</Button>
+                <Button size="sm" className="text-xs px-2 h-8">Sign In</Button>
               </Link>
             </div>
           </div>
