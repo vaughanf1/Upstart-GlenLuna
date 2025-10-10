@@ -3,6 +3,7 @@ import { ExternalLink, TrendingUp, Search, MessageCircle, Newspaper, Users, Awar
 interface Source {
   type: string
   url: string
+  score?: number
   meta?: Record<string, any>
 }
 
@@ -12,56 +13,37 @@ interface SourceListProps {
   className?: string
 }
 
-export function SourceList({ sources, limit = 5, className }: SourceListProps) {
+export function SourceList({ sources, limit = 8, className }: SourceListProps) {
   const getSourceIcon = (type: string) => {
-    switch (type) {
-      case 'trends':
-        return <TrendingUp className="w-4 h-4" />
-      case 'search':
-        return <Search className="w-4 h-4" />
-      case 'reddit':
-      case 'community':
-        return <MessageCircle className="w-4 h-4" />
-      case 'hackernews':
-        return <MessageCircle className="w-4 h-4" />
-      case 'news':
-        return <Newspaper className="w-4 h-4" />
-      case 'competition':
-        return <Users className="w-4 h-4" />
-      default:
-        return <Award className="w-4 h-4" />
+    const iconClass = "w-5 h-5"
+    const lowerType = type.toLowerCase()
+
+    if (lowerType.includes('google') || lowerType.includes('trends')) {
+      return <TrendingUp className={iconClass} />
     }
+    if (lowerType.includes('search')) {
+      return <Search className={iconClass} />
+    }
+    if (lowerType.includes('reddit') || lowerType.includes('community')) {
+      return <MessageCircle className={iconClass} />
+    }
+    if (lowerType.includes('hacker') || lowerType.includes('news')) {
+      return <Newspaper className={iconClass} />
+    }
+    if (lowerType.includes('product')) {
+      return <Award className={iconClass} />
+    }
+    if (lowerType.includes('competition')) {
+      return <Users className={iconClass} />
+    }
+    return <Award className={iconClass} />
   }
 
-  const getSourceLabel = (type: string) => {
-    switch (type) {
-      case 'trends':
-        return 'Google Trends'
-      case 'search':
-        return 'Search Volume'
-      case 'reddit':
-        return 'Reddit'
-      case 'hackernews':
-        return 'Hacker News'
-      case 'news':
-        return 'News Articles'
-      case 'competition':
-        return 'Competition Analysis'
-      default:
-        return type.charAt(0).toUpperCase() + type.slice(1)
-    }
-  }
-
-  const formatMeta = (meta: Record<string, any>) => {
-    if (!meta) return null
-
-    const parts = []
-    if (meta.mentions) parts.push(`${meta.mentions} mentions`)
-    if (meta.engagement) parts.push(`${meta.engagement} engagement`)
-    if (meta.volume) parts.push(`${meta.volume} volume`)
-    if (meta.competitors) parts.push(`${meta.competitors.join(', ')}`)
-
-    return parts.length > 0 ? parts.join(' • ') : null
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return 'bg-green-100 text-green-700 border-green-300'
+    if (score >= 65) return 'bg-blue-100 text-blue-700 border-blue-300'
+    if (score >= 50) return 'bg-yellow-100 text-yellow-700 border-yellow-300'
+    return 'bg-gray-100 text-gray-700 border-gray-300'
   }
 
   const displaySources = sources.slice(0, limit)
@@ -70,36 +52,50 @@ export function SourceList({ sources, limit = 5, className }: SourceListProps) {
     <div className={className}>
       <div className="space-y-3">
         {displaySources.map((source, index) => (
-          <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-            <div className="flex-shrink-0 mt-0.5 text-gray-600">
-              {getSourceIcon(source.type)}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center space-x-2">
-                <h4 className="font-medium text-gray-900">
-                  {getSourceLabel(source.type)}
+          <div key={index} className="p-4 bg-gray-50 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-colors">
+            <div className="flex items-start justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className="text-gray-600">
+                  {getSourceIcon(source.type)}
+                </div>
+                <h4 className="font-semibold text-gray-900">
+                  {source.type}
                 </h4>
                 <a
                   href={source.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:text-blue-600 flex-shrink-0"
+                  className="text-blue-500 hover:text-blue-600"
+                  title="View source"
                 >
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
-              {source.meta && formatMeta(source.meta) && (
-                <p className="text-sm text-gray-600 mt-1">
-                  {formatMeta(source.meta)}
-                </p>
+              {source.score !== undefined && (
+                <div className={`px-3 py-1 rounded-full border-2 font-bold text-sm ${getScoreColor(source.score)}`}>
+                  {source.score}
+                </div>
               )}
             </div>
+
+            {source.meta && Object.keys(source.meta).length > 0 && (
+              <div className="space-y-1 text-sm">
+                {Object.entries(source.meta).map(([key, value]) => (
+                  <div key={key} className="flex items-start gap-2">
+                    <span className="text-gray-600 font-medium min-w-[100px]">
+                      {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}:
+                    </span>
+                    <span className="text-gray-700 flex-1">{String(value)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
       {sources.length > limit && (
         <p className="text-sm text-gray-500 mt-3">
-          +{sources.length - limit} more sources
+          +{sources.length - limit} more sources available
         </p>
       )}
     </div>

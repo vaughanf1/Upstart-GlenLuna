@@ -25,7 +25,7 @@ export const ideaFiltersSchema = z.object({
   bookmarked: z.boolean().optional(),
   page: z.number().int().min(1).default(1),
   limit: z.number().int().min(1).max(100).default(20),
-  sortBy: z.enum(['score', 'createdAt', 'updatedAt']).default('score'),
+  sortBy: z.enum(['score', 'marketScore', 'createdAt', 'updatedAt']).default('marketScore'),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
 })
 

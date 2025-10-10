@@ -47,13 +47,13 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
   const rawIdea = await getIdea(slug)
   const idea = {
     ...rawIdea,
-    tags: JSON.parse(rawIdea.tags || '[]'),
-    sources: rawIdea.sources ? JSON.parse(rawIdea.sources) : [],
-    scoreBreakdown: rawIdea.scoreBreakdown ? JSON.parse(rawIdea.scoreBreakdown) : null,
-    pricingModel: rawIdea.pricingModel ? JSON.parse(rawIdea.pricingModel) : null,
-    executionPlan: rawIdea.executionPlan ? JSON.parse(rawIdea.executionPlan) : null,
-    goToMarketStrategy: rawIdea.goToMarketStrategy ? JSON.parse(rawIdea.goToMarketStrategy) : null,
-    proofSignals: rawIdea.proofSignals ? JSON.parse(rawIdea.proofSignals) : null,
+    tags: Array.isArray(rawIdea.tags) ? rawIdea.tags : (typeof rawIdea.tags === 'string' ? JSON.parse(rawIdea.tags || '[]') : []),
+    sources: rawIdea.sources ? (typeof rawIdea.sources === 'string' ? JSON.parse(rawIdea.sources) : rawIdea.sources) : [],
+    scoreBreakdown: rawIdea.scoreBreakdown ? (typeof rawIdea.scoreBreakdown === 'string' ? JSON.parse(rawIdea.scoreBreakdown) : rawIdea.scoreBreakdown) : null,
+    pricingModel: rawIdea.pricingModel ? (typeof rawIdea.pricingModel === 'string' ? JSON.parse(rawIdea.pricingModel) : rawIdea.pricingModel) : null,
+    executionPlan: rawIdea.executionPlan ? (typeof rawIdea.executionPlan === 'string' ? JSON.parse(rawIdea.executionPlan) : rawIdea.executionPlan) : null,
+    goToMarketStrategy: rawIdea.goToMarketStrategy ? (typeof rawIdea.goToMarketStrategy === 'string' ? JSON.parse(rawIdea.goToMarketStrategy) : rawIdea.goToMarketStrategy) : null,
+    proofSignals: rawIdea.proofSignals ? (typeof rawIdea.proofSignals === 'string' ? JSON.parse(rawIdea.proofSignals) : rawIdea.proofSignals) : null,
   }
 
   const getDifficultyStars = (difficulty: number) => {
@@ -143,9 +143,6 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               Created {formatDate(idea.createdAt)}
-            </div>
-            <div>
-              <span className="font-medium">{idea._count.bookmarks}</span> bookmarks
             </div>
           </div>
         </div>
@@ -397,6 +394,45 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
                   ) : (
                     <p className="text-gray-700 leading-relaxed">{idea.executionPlan}</p>
                   )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Go-To-Market Strategy */}
+            {idea.goToMarketStrategy && idea.goToMarketStrategy.length > 0 && (
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    <Target className="w-6 h-6" />
+                    Go-To-Market Strategy
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {idea.goToMarketStrategy.map((channel: any, idx: number) => (
+                      <div key={idx} className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200">
+                        <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
+                          <ArrowRight className="w-4 h-4" />
+                          {channel.channel}
+                        </h4>
+                        <p className="text-sm text-blue-800 mb-3">{channel.tactics}</p>
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          {channel.investment && (
+                            <div className="flex items-center gap-1">
+                              <DollarSign className="w-3 h-3 text-green-600" />
+                              <span className="text-gray-700">{channel.investment}</span>
+                            </div>
+                          )}
+                          {channel.expectedCAC && (
+                            <div className="flex items-center gap-1">
+                              <Users className="w-3 h-3 text-purple-600" />
+                              <span className="text-gray-700">CAC: {channel.expectedCAC}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             )}
