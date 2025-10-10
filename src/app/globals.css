@@ -52,11 +52,13 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
 
   html {
     overflow-x: hidden;
     width: 100%;
+    max-width: 100vw;
   }
 
   body {
@@ -64,6 +66,16 @@
     font-family: 'Inter', system-ui, sans-serif;
     overflow-x: hidden;
     width: 100%;
+    max-width: 100vw;
     position: relative;
+  }
+
+  /* Prevent all main containers from causing horizontal scroll */
+  #__next,
+  main,
+  section,
+  div[class*="min-h-screen"] {
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 }

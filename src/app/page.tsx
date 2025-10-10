@@ -19,7 +19,7 @@ export default async function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative py-12 md:py-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-12 md:py-20 px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
             Discover profitable startup ideas{' '}
@@ -46,7 +46,7 @@ export default async function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-12 md:py-16 px-3 sm:px-4 md:px-6 lg:px-8 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 md:mb-4">
@@ -57,7 +57,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             <Card className="text-center">
               <CardHeader>
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -108,7 +108,7 @@ export default async function HomePage() {
 
       {/* Featured Ideas */}
       {featuredIdeas.length > 0 && (
-        <section className="py-12 md:py-16 px-4 sm:px-6 lg:px-8">
+        <section className="py-12 md:py-16 px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8 md:mb-12">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 md:mb-4">
@@ -168,7 +168,7 @@ export default async function HomePage() {
       )}
 
       {/* How It Works */}
-      <section className="py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-12 md:py-16 px-3 sm:px-4 md:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 md:mb-4">
@@ -229,7 +229,7 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-blue-600">
+      <section className="py-12 md:py-16 px-3 sm:px-4 md:px-6 lg:px-8 bg-blue-600">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 md:mb-4">
             Ready to find your next big idea?
@@ -247,9 +247,9 @@ export default async function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+      <footer className="bg-gray-900 text-white py-12 px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Lightbulb className="w-6 h-6 text-blue-400" />
