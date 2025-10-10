@@ -123,12 +123,12 @@ export default function IdeasPage() {
       <header className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center text-gray-600 hover:text-gray-900">
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Back to Home
+            <Link href="/" className="flex items-center text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+              <span className="hidden xs:inline">Back to </span>Home
             </Link>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 border rounded-lg">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="hidden sm:flex items-center space-x-2 border rounded-lg">
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'ghost'}
                   size="sm"
@@ -144,21 +144,24 @@ export default function IdeasPage() {
                   <List className="w-4 h-4" />
                 </Button>
               </div>
-              <Link href="/auth/signin">
+              <Link href="/auth/signin" className="hidden sm:inline-block">
                 <Button>Sign In</Button>
+              </Link>
+              <Link href="/auth/signin" className="sm:hidden">
+                <Button size="sm">Sign In</Button>
               </Link>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Startup Ideas Catalog
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600">
             Discover and explore data-driven startup opportunities
           </p>
         </div>

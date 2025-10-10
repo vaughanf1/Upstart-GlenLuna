@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
@@ -7,6 +7,12 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'UpStart - Discover profitable startup ideas powered by data',
   description: 'Get ideas for profitable startups, trending keywords, and go-to-market tactics, powered by data',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 }
 
 export default function RootLayout({

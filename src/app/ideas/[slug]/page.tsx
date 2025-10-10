@@ -89,45 +89,52 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
       <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/ideas" className="flex items-center text-gray-600 hover:text-gray-900">
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Back to Ideas
+            <Link href="/ideas" className="flex items-center text-gray-600 hover:text-gray-900 text-sm sm:text-base">
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+              <span className="hidden xs:inline">Back to </span>Ideas
             </Link>
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm">
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <Button variant="outline" size="sm" className="hidden sm:inline-flex">
                 <Share2 className="w-4 h-4 mr-1" />
                 Share
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="hidden sm:inline-flex">
                 <Bookmark className="w-4 h-4 mr-1" />
                 Bookmark
+              </Button>
+              {/* Mobile - Icon only */}
+              <Button variant="outline" size="sm" className="sm:hidden px-2">
+                <Share2 className="w-4 h-4" />
+              </Button>
+              <Button variant="outline" size="sm" className="sm:hidden px-2">
+                <Bookmark className="w-4 h-4" />
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
         {/* Hero Section */}
-        <div className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="mb-8 md:mb-12">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 md:mb-4">
             <ScoreBadge score={idea.score} size="lg" showLabel />
             <div className="flex items-center gap-1">
               {getDifficultyStars(idea.difficulty)}
             </div>
           </div>
 
-          <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
             {idea.title}
           </h1>
 
           {idea.pitch && (
-            <p className="text-2xl text-gray-700 mb-6 leading-relaxed font-medium">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 mb-4 md:mb-6 leading-relaxed font-medium">
               {idea.pitch}
             </p>
           )}
 
-          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 md:mb-6 leading-relaxed">
             {idea.summary}
           </p>
 
@@ -147,13 +154,13 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
           {/* Main Content - Left Column */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6 md:space-y-8">
             {/* Key Metrics */}
             <Card className="shadow-lg border-2">
               <CardHeader>
-                <CardTitle className="text-2xl">Key Metrics</CardTitle>
+                <CardTitle className="text-xl md:text-2xl">Key Metrics</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
@@ -215,7 +222,7 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             {/* Business Fit */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl">Business Fit</CardTitle>
+                <CardTitle className="text-xl md:text-2xl">Business Fit</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {idea.revenuePotential && (
@@ -294,8 +301,8 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             {idea.marketGap && (
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Target className="w-6 h-6" />
+                  <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
+                    <Target className="w-5 h-5 md:w-6 md:h-6" />
                     The Market Gap
                   </CardTitle>
                 </CardHeader>
@@ -318,8 +325,8 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             {idea.whyNow && (
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <TrendingUp className="w-6 h-6" />
+                  <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 md:w-6 md:h-6" />
                     Why Now?
                   </CardTitle>
                 </CardHeader>
@@ -339,8 +346,8 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             {idea.pricingModel && idea.pricingModel.length > 0 && (
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <DollarSign className="w-6 h-6" />
+                  <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 md:w-6 md:h-6" />
                     Pricing & Offer Structure
                   </CardTitle>
                 </CardHeader>
@@ -371,8 +378,8 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             {idea.executionPlan && (
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <CheckCircle2 className="w-6 h-6" />
+                  <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6" />
                     Execution Plan
                   </CardTitle>
                 </CardHeader>
@@ -402,8 +409,8 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             {idea.goToMarketStrategy && idea.goToMarketStrategy.length > 0 && (
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Target className="w-6 h-6" />
+                  <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
+                    <Target className="w-5 h-5 md:w-6 md:h-6" />
                     Go-To-Market Strategy
                   </CardTitle>
                 </CardHeader>
@@ -441,8 +448,8 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             {idea.targetUser && (
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Users className="w-6 h-6" />
+                  <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
+                    <Users className="w-5 h-5 md:w-6 md:h-6" />
                     Target Market
                   </CardTitle>
                 </CardHeader>
@@ -459,7 +466,7 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
           </div>
 
           {/* Sidebar - Right Column */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-4 md:space-y-6">
             {/* Build Type & Difficulty */}
             <Card className="shadow-lg">
               <CardHeader>
@@ -540,7 +547,7 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
             )}
 
             {/* Action Buttons */}
-            <div className="space-y-3">
+            <div className="space-y-3 hidden lg:block">
               <Button size="lg" className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700">
                 <Bookmark className="w-5 h-5 mr-2" />
                 Bookmark This Idea
@@ -554,7 +561,7 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-12 text-center">
+        <div className="mt-8 md:mt-12 text-center">
           <Link href="/ideas">
             <Button variant="outline" size="lg">
               Browse More Ideas
