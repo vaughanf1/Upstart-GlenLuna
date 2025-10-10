@@ -1,29 +1,16 @@
 import Link from 'next/link'
-import { TrendingUp, Search, Users, Lightbulb, ArrowRight, ExternalLink } from 'lucide-react'
+import { TrendingUp, Search, Users, Lightbulb, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { db } from '@/lib/db'
+import { getAllIdeas } from '@/lib/json-db'
 import { ScoreBadge } from '@/components/score-badge'
 
 export default async function HomePage() {
-  // Fetch featured ideas from IdeaBrowser (top 3 by score)
-  const featuredIdeas = await db.idea.findMany({
-    orderBy: { score: 'desc' },
-    take: 3,
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      summary: true,
-      score: true,
-      tags: true,
-      sources: true,
-    },
-  }).then(ideas => ideas.map(idea => ({
-    ...idea,
-    tags: JSON.parse(idea.tags as string) as string[],
-    sources: JSON.parse(idea.sources as string) as Array<{ type: string; url: string }>,
-  })))
+  // Fetch featured ideas (top 3 by score)
+  const allIdeas = getAllIdeas()
+  const featuredIdeas = allIdeas
+    .sort((a, b) => (b.marketScore || 0) - (a.marketScore || 0))
+    .slice(0, 3)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -32,7 +19,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <Lightbulb className="w-8 h-8 text-primary-500" />
+              <Lightbulb className="w-8 h-8 text-blue-600" />
               <span className="text-xl font-bold text-gray-900">UpStart</span>
             </div>
             <div className="flex items-center space-x-4">
@@ -48,12 +35,6 @@ export default async function HomePage() {
               <Link href="/founder-fit">
                 <Button variant="ghost">Founder Fit Quiz</Button>
               </Link>
-              <Link href="/auth/signin">
-                <Button variant="outline">Sign In</Button>
-              </Link>
-              <Link href="/auth/signup">
-                <Button>Sign Up</Button>
-              </Link>
             </div>
           </div>
         </div>
@@ -64,7 +45,7 @@ export default async function HomePage() {
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
             Discover profitable startup ideas{' '}
-            <span className="text-primary-500">powered by data</span>
+            <span className="text-blue-600">powered by data</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Get ideas for profitable startups, trending keywords, and go-to-market tactics,
@@ -147,7 +128,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Ideas from IdeaBrowser */}
+      {/* Featured Ideas */}
       {featuredIdeas.length > 0 && (
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
@@ -156,66 +137,50 @@ export default async function HomePage() {
                 Featured Startup Ideas
               </h2>
               <p className="text-lg text-gray-600">
-                Curated ideas from the IdeaBrowser database, ranked by market potential
+                Curated ideas ranked by market potential
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
-              {featuredIdeas.map((idea) => {
-                const ideaBrowserSource = idea.sources.find(s => s.type === 'ideabrowser')
-                const isFromIdeaBrowser = !!ideaBrowserSource
-
-                return (
-                  <Card key={idea.id} className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-2">
-                        <ScoreBadge score={idea.score} size="sm" />
-                        {isFromIdeaBrowser && (
-                          <a
-                            href={ideaBrowserSource.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs text-gray-500 hover:text-blue-600 flex items-center gap-1"
-                          >
-                            <ExternalLink className="w-3 h-3" />
-                            IdeaBrowser
-                          </a>
-                        )}
-                      </div>
-                      <CardTitle className="text-lg line-clamp-2">
-                        {idea.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                        {idea.summary}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {idea.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <Link href={`/ideas/${idea.slug}`}>
-                        <Button variant="outline" size="sm" className="w-full">
-                          View Details
-                          <ArrowRight className="ml-2 w-4 h-4" />
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                )
-              })}
+              {featuredIdeas.map((idea) => (
+                <Card key={idea.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-start justify-between mb-2">
+                      <ScoreBadge score={idea.marketScore || 0} size="sm" />
+                    </div>
+                    <CardTitle className="text-lg line-clamp-2">
+                      {idea.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                      {idea.description.slice(0, 150)}...
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {idea.tags?.slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <Link href={`/ideas/${idea.slug}`}>
+                      <Button variant="outline" size="sm" className="w-full">
+                        View Details
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
 
             <div className="text-center">
               <Link href="/ideas">
                 <Button variant="outline" size="lg">
-                  Browse All {featuredIdeas.length > 0 ? 'Ideas' : ''}
+                  Browse All Ideas
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
@@ -238,7 +203,7 @@ export default async function HomePage() {
 
           <div className="space-y-8">
             <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center font-semibold">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
                 1
               </div>
               <div>
@@ -253,7 +218,7 @@ export default async function HomePage() {
             </div>
 
             <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center font-semibold">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
                 2
               </div>
               <div>
@@ -268,7 +233,7 @@ export default async function HomePage() {
             </div>
 
             <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center font-semibold">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
                 3
               </div>
               <div>
@@ -286,7 +251,7 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-primary-500">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-blue-600">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to find your next big idea?
@@ -295,7 +260,7 @@ export default async function HomePage() {
             Join thousands of entrepreneurs discovering data-driven opportunities.
           </p>
           <Link href="/idea-of-the-day">
-            <Button size="lg" className="bg-white text-primary-500 hover:bg-gray-100">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
               Start with Today's Idea
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
@@ -309,7 +274,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Lightbulb className="w-6 h-6 text-primary-400" />
+                <Lightbulb className="w-6 h-6 text-blue-400" />
                 <span className="text-lg font-bold">UpStart</span>
               </div>
               <p className="text-gray-400">
@@ -322,14 +287,7 @@ export default async function HomePage() {
                 <li><Link href="/idea-of-the-day" className="hover:text-white">Idea of the Day</Link></li>
                 <li><Link href="/ideas" className="hover:text-white">Browse Ideas</Link></li>
                 <li><Link href="/founder-fit" className="hover:text-white">Founder Fit Quiz</Link></li>
-                <li><Link href="/ideas?sortBy=score" className="hover:text-white">Top Scored</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Account</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/auth/signin" className="hover:text-white">Sign In</Link></li>
-                <li><Link href="/auth/signup" className="hover:text-white">Sign Up</Link></li>
+                <li><Link href="/ideas?sortBy=marketScore" className="hover:text-white">Top Scored</Link></li>
               </ul>
             </div>
             <div>

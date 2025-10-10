@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Bookmark, Calendar, RefreshCw, Star, Share2, TrendingUp, DollarSign, Target, Zap, Users, BarChart3, CheckCircle2, ArrowRight } from 'lucide-react'
-import { db } from '@/lib/db'
+import { getIdeaBySlug } from '@/lib/json-db'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -11,15 +11,8 @@ import { ScoreBreakdownChart } from '@/components/score-breakdown-chart'
 import { SourceList } from '@/components/source-list'
 import { formatDate } from '@/lib/utils'
 
-async function getIdea(slug: string) {
-  const idea = await db.idea.findUnique({
-    where: { slug },
-    include: {
-      _count: {
-        select: { bookmarks: true }
-      }
-    }
-  })
+function getIdea(slug: string) {
+  const idea = getIdeaBySlug(slug)
 
   if (!idea) {
     notFound()

@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { db } from '@/lib/db'
-import { authOptions } from '@/lib/auth'
+import { getAllIdeas, createIdea } from '@/lib/json-db'
 import { ideaFiltersSchema } from '@/lib/validations/idea'
 
 export async function GET(request: NextRequest) {
@@ -13,77 +11,65 @@ export async function GET(request: NextRequest) {
       buildType: searchParams.get('buildType')?.split(',').filter(Boolean),
       minScore: searchParams.get('minScore') ? Number(searchParams.get('minScore')) : undefined,
       maxScore: searchParams.get('maxScore') ? Number(searchParams.get('maxScore')) : undefined,
-      bookmarked: searchParams.get('bookmarked') === 'true',
       page: searchParams.get('page') ? Number(searchParams.get('page')) : 1,
       limit: searchParams.get('limit') ? Number(searchParams.get('limit')) : 20,
-      sortBy: searchParams.get('sortBy') as any || 'score',
+      sortBy: searchParams.get('sortBy') as any || 'marketScore',
       sortOrder: searchParams.get('sortOrder') as any || 'desc',
     })
 
-    const session = await getServerSession(authOptions)
-    const skip = (filters.page - 1) * filters.limit
-
-    const where: any = {}
+    let ideas = getAllIdeas()
 
     // Apply filters
     if (filters.tags && filters.tags.length > 0) {
-      where.tags = { hasSome: filters.tags }
+      ideas = ideas.filter(idea =>
+        idea.tags?.some(tag => filters.tags!.includes(tag))
+      )
     }
 
     if (filters.difficulty && filters.difficulty.length > 0) {
-      where.difficulty = { in: filters.difficulty }
+      ideas = ideas.filter(idea =>
+        idea.difficulty && filters.difficulty!.includes(idea.difficulty)
+      )
     }
 
     if (filters.buildType && filters.buildType.length > 0) {
-      where.buildType = { in: filters.buildType }
+      ideas = ideas.filter(idea =>
+        idea.buildType && filters.buildType!.includes(idea.buildType)
+      )
     }
 
-    if (filters.minScore !== undefined || filters.maxScore !== undefined) {
-      where.score = {}
-      if (filters.minScore !== undefined) where.score.gte = filters.minScore
-      if (filters.maxScore !== undefined) where.score.lte = filters.maxScore
+    if (filters.minScore !== undefined) {
+      ideas = ideas.filter(idea =>
+        (idea.marketScore || 0) >= filters.minScore!
+      )
     }
 
-    // Bookmarked filter (requires authentication)
-    if (filters.bookmarked && session?.user?.id) {
-      where.bookmarks = {
-        some: {
-          userId: session.user.id
-        }
+    if (filters.maxScore !== undefined) {
+      ideas = ideas.filter(idea =>
+        (idea.marketScore || 0) <= filters.maxScore!
+      )
+    }
+
+    // Sorting
+    ideas.sort((a, b) => {
+      const sortKey = filters.sortBy as keyof typeof a
+      const aVal = a[sortKey] || 0
+      const bVal = b[sortKey] || 0
+
+      if (filters.sortOrder === 'asc') {
+        return aVal > bVal ? 1 : -1
+      } else {
+        return aVal < bVal ? 1 : -1
       }
-    }
+    })
 
-    const [ideas, total] = await Promise.all([
-      db.idea.findMany({
-        where,
-        include: {
-          bookmarks: session?.user?.id ? {
-            where: { userId: session.user.id }
-          } : false,
-          _count: {
-            select: { bookmarks: true }
-          }
-        },
-        orderBy: { [filters.sortBy]: filters.sortOrder },
-        skip,
-        take: filters.limit,
-      }),
-      db.idea.count({ where })
-    ])
-
-    const ideasWithBookmarkStatus = ideas.map(idea => ({
-      ...idea,
-      tags: JSON.parse(idea.tags || '[]'),
-      sources: idea.sources ? JSON.parse(idea.sources) : null,
-      scoreBreakdown: idea.scoreBreakdown ? JSON.parse(idea.scoreBreakdown) : null,
-      isBookmarked: session?.user?.id ? idea.bookmarks.length > 0 : false,
-      bookmarkCount: idea._count.bookmarks,
-      bookmarks: undefined, // Remove from response
-      _count: undefined,
-    }))
+    // Pagination
+    const total = ideas.length
+    const skip = (filters.page - 1) * filters.limit
+    const paginatedIdeas = ideas.slice(skip, skip + filters.limit)
 
     return NextResponse.json({
-      ideas: ideasWithBookmarkStatus,
+      ideas: paginatedIdeas,
       total,
       page: filters.page,
       limit: filters.limit,
@@ -94,6 +80,21 @@ export async function GET(request: NextRequest) {
     console.error('Error fetching ideas:', error)
     return NextResponse.json(
       { error: 'Failed to fetch ideas' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const idea = createIdea(body)
+
+    return NextResponse.json(idea, { status: 201 })
+  } catch (error) {
+    console.error('Error creating idea:', error)
+    return NextResponse.json(
+      { error: 'Failed to create idea' },
       { status: 500 }
     )
   }

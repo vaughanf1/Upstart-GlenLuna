@@ -1,0 +1,87 @@
+[
+  {
+    "id": "1",
+    "title": "Sora 2 + AgentKit | Automated Video Marketing Platform for Local Businesses ($5M ARR)",
+    "description": "Local businesses struggle to create professional videos and manage bookings while running their operations. VideoBooker combines AI video creation with appointment scheduling in one platform. Using OpenAI&#x27;s Sora 2 technology and AgentKit, the system transforms your business details into engaging promotional videos while handling customer bookings end-to-end. Upload your information once, and let the AI generate custom videos optimized for social media that drive real appointments.\r\n\r\nAt $199-$349/month based on features needed, VideoBooker targets independent service providers and retail shops who know video marketing works but lack time and resources. The platform:\r\n\r\n• Automatically generates professional videos from your business data\r\n• Creates content optimized for different social platforms\r\n• Integrates booking capabilities to convert viewers into appointments\r\n• Provides analytics to track which videos drive actual business\r\n\r\nStart with a simple template system using OpenAI&#x27;s Sora 2 for video generation, then integrate with Calendly or Acuity for seamless booking. Growth comes through Facebook business groups, chamber partnerships, and case studies showing measurable ROI.\r\n\r\nWith 2,000+ businesses at an average $300/month within 18 months, you&#x27;re on track for $7M ARR. Each successful customer becomes both a case study and an advocate, creating a powerful word-of-mouth engine in local business communities.",
+    "slug": "sora-2-agentkit-weekly-promo-machine-for-local-biz",
+    "url": "https://www.ideabrowser.com/idea/sora-2-agentkit-weekly-promo-machine-for-local-biz",
+    "isIdeaOfTheDay": true,
+    "marketScore": 69,
+    "difficulty": 2,
+    "buildType": "Marketplace",
+    "tags": [
+      "AI",
+      "marketing",
+      "local business",
+      "analytics"
+    ],
+    "createdAt": "2025-10-07T08:16:31.759Z"
+  },
+  {
+    "id": "2",
+    "title": "Recipe scaling tool that eliminates batch calculation errors for professional bakers ($5M ARR)",
+    "description": "Professional bakers waste hours every day doing mental math to scale recipes up and down, and one miscalculation can ruin an entire batch. BakeScale is an intelligent recipe assistant that instantly converts any recipe to any batch size while accounting for the quirky math that makes baking different from cooking.\n\nUnlike basic converters, it understands that you can&#x27;t just multiply yeast by 10, that gluten development changes with batch size, and that oven temperatures need adjusting for larger loads.\n\nYou charge $29-99/month depending on features, targeting the 50,000+ professional bakeries in the US that are tired of recipe math eating into their margins. The tool integrates with existing POS systems and kitchen displays, learns from your specific ovens and ingredients, and suggests optimal batch sizes based on your daily orders.\n\nYou grow through baking supply distributors, culinary school partnerships, and influencer bakers on YouTube who are already talking about precision and consistency.\n\nStart with a simple web app that handles the core scaling logic using baking science principles. Partner with 5-10 local bakeries to beta test the math accuracy and add features like ingredient cost tracking and shelf-life optimization.\n\nThe wedge is error elimination, but you expand into full production planning, inventory management, and eventually smart kitchen equipment integration. Every bakery you serve becomes stickier as they customize the tool to their specific recipes, suppliers, and production schedules. This becomes the operating system for precision baking, where getting the math wrong isn&#x27;t just annoying, it&#x27;s expensive.",
+    "slug": "ai-baking-recipe-scaler-for-pros",
+    "url": "https://www.ideabrowser.com/idea/ai-baking-recipe-scaler-for-pros",
+    "isIdeaOfTheDay": false,
+    "marketScore": 71,
+    "difficulty": 3,
+    "buildType": "Tool",
+    "tags": [
+      "AI"
+    ],
+    "createdAt": "2025-07-21T10:22:19.033Z"
+  },
+  {
+    "id": "3",
+    "title": "Insurance readiness kit that helps homeowners get approved for coverage in high-risk areas ($5M ARR)",
+    "description": "Homeowners in wildfire zones, hurricane paths, and flood plains are getting dropped by insurers or facing sky-high premiums. The Insurance-Ready Home Kit solves this by giving you everything needed to prove your home meets insurer requirements: detailed risk assessments, mitigation checklists, professional documentation, and compliance tracking. It&#x27;s like having an insurance consultant in a box, but for $199 instead of $2,000.\n\nYou get a custom kit based on your location&#x27;s specific risks, complete with step-by-step guides for defensible space, flood barriers, wind-resistant upgrades, and fire-safe landscaping. The platform connects you with pre-approved contractors, tracks completion, and generates the professional reports insurers actually want to see. Add a $15/month subscription for policy updates, regulatory changes, and renewal prep.\n\nThe wedge is homeowners who&#x27;ve been dropped or can&#x27;t find coverage. You grow through Facebook groups full of frustrated homeowners, YouTube partnerships with home improvement channels, and direct partnerships with regional insurers who want to write more policies but need better risk documentation. Start by targeting one high-risk region like California wildfire zones or Florida hurricane areas, nail the local requirements, then expand state by state.\n\nLong-term, this becomes the infrastructure layer between homeowners and insurers. You can add real-time monitoring, automatic compliance alerts, and white-label solutions for insurance brokers. At 25,000 kits sold annually plus recurring revenue, you&#x27;re looking at $5M+ ARR in a market where people will pay almost anything to protect their biggest asset.",
+    "slug": "hard-to-insure-homeowner-binder-builder",
+    "url": "https://www.ideabrowser.com/idea/hard-to-insure-homeowner-binder-builder",
+    "isIdeaOfTheDay": false,
+    "marketScore": 92,
+    "difficulty": 4,
+    "buildType": "Marketplace",
+    "tags": [
+      "AI",
+      "compliance"
+    ],
+    "createdAt": "2025-08-18T04:57:50.475Z"
+  },
+  {
+    "id": "4",
+    "title": "Compliance automation platform that prevents fair housing violations for real estate agents ($5M ARR)",
+    "description": "Real estate agents live in fear of accidentally violating fair housing laws while buried under compliance paperwork. One wrong word in a listing description could trigger a lawsuit or fine.\r\n\r\nComplianceGuard automatically scans your property listings, marketing materials, and client communications to flag potential violations before they go live. It integrates directly with your MLS system and suggests compliant alternatives in real-time, so you can focus on selling homes instead of memorizing housing law.\r\n\r\nYou charge $99-199/month per agent, with enterprise packages for brokerages at $5K-15K annually. The platform learns from NAR guidelines, local regulations, and recent violation cases to stay current with evolving compliance requirements. You grow by targeting the 162K+ members in r/realtors, Facebook groups for transaction coordinators, and YouTube channels focused on real estate software reviews.\r\n\r\nStart with a simple web dashboard that uses ai to analyze listing text against fair housing guidelines. Add MLS integrations through APIs like Spark Platform or Trestle, and build automated workflows that catch violations before listings publish. Test with 10-20 independent agents who are already active in compliance discussions online.\r\n\r\nWithin 18 months, you expand beyond fair housing into broader transaction compliance: contract reviews, disclosure management, and audit trails. At $150/month average and 3,000+ agents, you hit $5M ARR serving an industry desperate for automated protection in an increasingly regulated market.",
+    "slug": "real-estate-photos-listing-writer-compliance-checker",
+    "url": "https://www.ideabrowser.com/idea/real-estate-photos-listing-writer-compliance-checker",
+    "isIdeaOfTheDay": false,
+    "marketScore": 78,
+    "difficulty": 3,
+    "buildType": "Marketplace",
+    "tags": [
+      "AI",
+      "automation",
+      "marketing",
+      "real estate",
+      "compliance"
+    ],
+    "createdAt": "2025-08-14T01:39:29.514Z"
+  },
+  {
+    "id": "5",
+    "title": "Rebate automation platform that handles eco-upgrade paperwork for green homeowners ($5M ARR)",
+    "description": "Homeowners want to go green but get buried in rebate paperwork. Solar panels, heat pumps, insulation upgrades all qualify for thousands in tax credits and utility rebates, but the application process is a nightmare of forms, receipts, and eligibility requirements that change constantly.\n\nRebateRocket automates the entire workflow. You snap photos of receipts, connect your utility account, and the platform handles everything else: filing applications, tracking deadlines, maximizing rebate stacks, and even monitoring new programs you qualify for.\n\nYou charge $25-100/month for households plus 2-5% commission on successful rebates. The wedge is frustrated homeowners in Reddit forums and Facebook groups asking &quot;how do I actually claim these credits?&quot; You grow through partnerships with solar installers, HVAC contractors, and green product retailers who want to remove friction from customer purchases.\n\nStart with a simple mobile app that uses receipt scanning and form automation. Connect to utility APIs for automatic eligibility checking and rebate tracking. Build a database of local and federal programs, then layer on smart notifications for new opportunities. Test with 20-50 homeowners who just completed energy upgrades.\n\nThe market timing is perfect - federal climate incentives are at an all-time high but complexity is killing adoption. You turn every energy upgrade into found money, making green choices financially irresistible. Once you own the rebate relationship, you become the go-to platform for all home efficiency decisions, from product recommendations to contractor matching.",
+    "slug": "rebate-paperwork-robot-for-homeowners",
+    "url": "https://www.ideabrowser.com/idea/rebate-paperwork-robot-for-homeowners",
+    "isIdeaOfTheDay": true,
+    "marketScore": 61,
+    "difficulty": 4,
+    "buildType": "Marketplace",
+    "tags": [
+      "AI",
+      "automation",
+      "climate"
+    ],
+    "createdAt": "2025-08-07T09:39:53.594Z"
+  }
+]
