@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Lightbulb, Menu, X } from 'lucide-react'
+import Image from 'next/image'
+import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export function Header() {
@@ -16,13 +17,19 @@ export function Header() {
   ]
 
   return (
-    <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50 w-full">
+    <header className="border-b border-black/10 bg-white sticky top-0 z-50 w-full">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 w-full">
         <div className="flex justify-between items-center h-14 sm:h-16 w-full">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
-            <Lightbulb className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
-            <span className="text-lg sm:text-xl font-bold text-gray-900">UpStart</span>
+            <Image
+              src="/glenluna.png"
+              alt="Glen Luna"
+              width={140}
+              height={48}
+              className="h-10 sm:h-12 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "technicalSkills": 4,
+    "designSkills": 3,
+    "marketingSkills": 4,
+    "salesSkills": 3,
+    "industryExperience": [
+      "SaaS",
+      "FinTech"
+    ],
+    "yearsExperience": 5,
+    "riskTolerance": 4,
+    "timeCommitment": "full-time",
+    "fundingCapacity": "bootstrapped",
+    "preferredBuildTypes": [
+      "SaaS",
+      "AI Agent",
+      "Tool"
+    ],
+    "preferredTags": [
+      "AI",
+      "automation",
+      "SaaS",
+      "productivity"
+    ],
+    "name": "Anonymous Founder",
+    "email": "founder@example.com",
+    "id": "1762297137648",
+    "createdAt": "2025-11-04T22:58:57.648Z"
+  }
+]

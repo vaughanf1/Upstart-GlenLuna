@@ -1,12 +1,22 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
+
+// Using Plus Jakarta Sans as alternative to Switzer (similar bold, modern sans-serif)
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['400', '500', '600', '700', '800'],
+})
 
 export const metadata: Metadata = {
-  title: 'UpStart - Discover profitable startup ideas powered by data',
-  description: 'Get ideas for profitable startups, trending keywords, and go-to-market tactics, powered by data',
+  title: 'Glen Luna - We get founders funded',
+  description: 'Raising money for founders all over the world from investors all over the world',
 }
 
 export const viewport: Viewport = {
@@ -22,7 +32,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
+      <body className={`${plusJakartaSans.className} ${inter.variable}`}>{children}</body>
     </html>
   )
 }
