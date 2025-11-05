@@ -8,15 +8,26 @@ import { ScoreBadge } from '@/components/score-badge'
 function getDailyIdea() {
   const allIdeas = getAllIdeas()
 
-  // Find idea marked as idea of the day, or fallback to highest scored
-  const ideaOfTheDay = allIdeas.find(idea => idea.isIdeaOfTheDay)
-
-  if (ideaOfTheDay) {
-    return ideaOfTheDay
+  if (!allIdeas || allIdeas.length === 0) {
+    return null
   }
 
-  // Fallback to highest scored idea
-  return allIdeas.sort((a, b) => (b.marketScore || 0) - (a.marketScore || 0))[0]
+  // Use current date as seed for deterministic random selection
+  // This ensures the same idea shows all day, but changes daily
+  const today = new Date()
+  const dateString = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+
+  // Simple hash function to convert date to a number
+  let hash = 0
+  for (let i = 0; i < dateString.length; i++) {
+    hash = ((hash << 5) - hash) + dateString.charCodeAt(i)
+    hash = hash & hash // Convert to 32-bit integer
+  }
+
+  // Use the hash to select an idea index
+  const index = Math.abs(hash) % allIdeas.length
+
+  return allIdeas[index]
 }
 
 export default function IdeaOfTheDayPage() {
@@ -92,7 +103,7 @@ export default function IdeaOfTheDayPage() {
             Idea of the Day
           </h1>
           <p className="text-lg text-gray-600">
-            Our highest-scoring startup idea, updated daily
+            A fresh startup idea from our catalog, automatically selected daily
           </p>
         </div>
 
