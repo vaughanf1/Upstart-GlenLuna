@@ -1,5 +1,5 @@
 /**
- * Import scraped ideas from IdeaBrowser into database
+ * Import scraped ideas from external sources into database
  * Run with: npx tsx scripts/import-scraped-ideas.ts
  */
 
@@ -18,7 +18,6 @@ const prisma = new PrismaClient()
 interface ScrapedIdea {
   title: string
   description: string
-  url: string
   slug: string
   releaseDate?: string
   isIdeaOfTheDay?: boolean
@@ -27,10 +26,10 @@ interface ScrapedIdea {
 function generateSlug(title: string, originalSlug: string): string {
   // Use original slug if available, otherwise create from title
   if (originalSlug && originalSlug.length > 0) {
-    return `ideabrowser-${originalSlug}`
+    return `imported-${originalSlug}`
   }
 
-  return `ideabrowser-${title
+  return `imported-${title
     .toLowerCase()
     .replace(/[^\w\s-]/g, '')
     .replace(/\s+/g, '-')
@@ -135,8 +134,7 @@ async function importIdeas() {
             sources: JSON.stringify([
               ...scoringResult.sources,
               {
-                type: 'ideabrowser',
-                url: scrapedIdea.url,
+                type: 'imported',
                 meta: {
                   originalSlug: scrapedIdea.slug,
                   isIdeaOfTheDay: scrapedIdea.isIdeaOfTheDay || false

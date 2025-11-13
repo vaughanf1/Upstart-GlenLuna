@@ -63,7 +63,7 @@ Visit `http://localhost:3000` to see the application.
 
 After seeding, you can use these accounts:
 
-- **Admin**: `admin@ideabrowser.com` / `admin123`
+- **Admin**: `admin@example.com` / `admin123`
 - **User**: `user@example.com` / `user123`
 
 ## Available Scripts

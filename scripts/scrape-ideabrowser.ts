@@ -1,5 +1,5 @@
 /**
- * Scrape ideas from ideabrowser.com/database
+ * DEPRECATED: Legacy script for scraping ideas from external sources
  * Run with: npx tsx scripts/scrape-ideabrowser.ts
  */
 
@@ -12,7 +12,6 @@ dotenv.config({ path: path.resolve(__dirname, '../.env.local') })
 interface ScrapedIdea {
   title: string
   description: string
-  url: string
   slug: string
   releaseDate?: string
   isIdeaOfTheDay?: boolean
@@ -86,23 +85,16 @@ async function scrapeIdeaBrowser(maxIdeas: number = 20): Promise<ScrapedIdea[]> 
     for (const knownIdea of ideaList) {
       try {
         const slug = knownIdea.slug!
-        console.log(`Fetching idea ${count + 1}/${ideaList.length}: ${slug}`)
+        console.log(`Processing idea ${count + 1}/${ideaList.length}: ${slug}`)
 
-        const ideaUrl = `https://www.ideabrowser.com/idea/${slug}`
-        const ideaResponse = await fetch(ideaUrl)
-
-        if (!ideaResponse.ok) {
-          console.warn(`Failed to fetch ${slug}: ${ideaResponse.statusText}`)
-          continue
-        }
-
-        const ideaHtml = await ideaResponse.text()
+        // Note: External URL fetching removed
+        const ideaHtml = ''
 
         // Extract title (use known title or parse from page)
         let title = knownIdea.title || ''
         if (!title) {
           const titleMatch = ideaHtml.match(/<title>([^<]+)<\/title>/)
-          title = titleMatch ? titleMatch[1].replace(' - Ideabrowser', '').trim() : slug
+          title = titleMatch ? titleMatch[1].trim() : slug
         }
 
         // Extract description from meta tag or first paragraph
@@ -112,13 +104,12 @@ async function scrapeIdeaBrowser(maxIdeas: number = 20): Promise<ScrapedIdea[]> 
         if (!description) {
           // Try to find the main description paragraph
           const paraMatch = ideaHtml.match(/<p[^>]*>([^<]{200,1000})<\/p>/)
-          description = paraMatch ? paraMatch[1].substring(0, 500) : 'Innovative startup idea from IdeaBrowser'
+          description = paraMatch ? paraMatch[1].substring(0, 500) : 'Innovative startup idea'
         }
 
         ideas.push({
           title,
           description,
-          url: ideaUrl,
           slug,
           isIdeaOfTheDay: knownIdea.isIdeaOfTheDay || false
         })

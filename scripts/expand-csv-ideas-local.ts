@@ -396,7 +396,6 @@ function expandIdea(csvRow: CSVRow, index: number): ExpandedIdea {
     title: csvRow.Title,
     description: csvRow.Description,
     slug,
-    url: `https://www.ideabrowser.com/idea/${slug}`,
     isIdeaOfTheDay: false,
     marketScore: scores.marketScore,
     difficulty,

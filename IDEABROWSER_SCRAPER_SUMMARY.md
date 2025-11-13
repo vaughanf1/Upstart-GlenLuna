@@ -1,15 +1,15 @@
-# IdeaBrowser Scraper - Implementation Summary
+# External Ideas Scraper - Implementation Summary (DEPRECATED)
 
 ## ✅ What's Been Completed
 
-I've successfully implemented a web scraper that fetches startup ideas from **ideabrowser.com/database** and displays them on your home page!
+This document describes a legacy web scraper implementation that was used to fetch startup ideas from external sources.
 
 ## 🎯 Features Implemented
 
 ### 1. Web Scraper (`scripts/scrape-ideabrowser.ts`)
-- Scrapes startup ideas from IdeaBrowser.com
-- Currently configured with 12 curated startup ideas from the database
-- Extracts: title, description, URL, slug, and metadata
+- Legacy script for scraping startup ideas from external sources
+- Currently configured with 12 curated startup ideas
+- Extracts: title, description, slug, and metadata
 - Saves scraped data to `data/scraped-ideas.json`
 - Includes rate limiting (800ms delay between requests) to be respectful
 
@@ -17,7 +17,7 @@ I've successfully implemented a web scraper that fetches startup ideas from **id
 - Imports scraped ideas into your Prisma database
 - Automatically generates AI-powered scores using your existing scoring system
 - Extracts tags from titles (AI, SaaS, Platform, etc.)
-- Adds IdeaBrowser source attribution with original URL
+- Adds source attribution
 - Prevents duplicate imports
 
 ### 3. Home Page Integration
@@ -27,13 +27,12 @@ I've successfully implemented a web scraper that fetches startup ideas from **id
   - AI-generated score badge
   - Title and description
   - Tag pills (up to 3 tags)
-  - External link to original IdeaBrowser source
   - "View Details" button to your idea detail page
 - Fully responsive design matching your Apple-style aesthetic
 
 ## 📊 Results
 
-Successfully imported **5 startup ideas** from IdeaBrowser:
+Successfully imported **5 startup ideas**:
 
 1. **Sora 2 + AgentKit | Video Marketing Platform** (Score: 409)
    - Automated video creation for local businesses
@@ -61,7 +60,7 @@ Successfully imported **5 startup ideas** from IdeaBrowser:
 ```bash
 npm run scrape:ideas
 ```
-This fetches ideas from IdeaBrowser and saves them to `data/scraped-ideas.json`
+This legacy script saves ideas to `data/scraped-ideas.json`
 
 ### Import to Database
 ```bash
@@ -74,7 +73,7 @@ Just visit `http://localhost:3000` - the featured ideas section automatically di
 
 ## 🔧 How It Works
 
-1. **Scraping**: The scraper uses `fetch()` to download idea pages from ideabrowser.com
+1. **Scraping**: Legacy functionality for downloading idea pages from external sources
 2. **Parsing**: Extracts title and description from HTML meta tags and content
 3. **Scoring**: Each imported idea gets scored using your existing AI-powered scoring system (mock or real data based on `DATA_MODE`)
 4. **Display**: The home page queries the database for top-scored ideas and displays them in a beautiful card layout
@@ -97,32 +96,30 @@ src/app/
 
 - Clean, minimal cards with shadow hover effects
 - Score badges with color-coded ratings
-- External link icon for IdeaBrowser attribution
 - Tag pills showing idea categories
 - Responsive 3-column grid layout
 - Apple-style aesthetics matching your design system
 
 ## 🔄 Future Enhancements
 
-To scrape more ideas, you can:
+To enhance the ideas platform, you can:
 
 1. **Add more idea slugs** to the `KNOWN_IDEAS` array in `scrape-ideabrowser.ts`
-2. **Implement pagination** to scrape multiple pages
-3. **Auto-scraping**: Set up a cron job to scrape new ideas daily
-4. **Filtering**: Add filters to show only specific categories from IdeaBrowser
+2. **Implement pagination** to display multiple pages
+3. **Auto-updates**: Set up a cron job to refresh ideas daily
+4. **Filtering**: Add filters to show only specific categories
 5. **Dynamic scraping**: Use Playwright/Puppeteer to handle JavaScript-rendered content
 
 ## 📝 Notes
 
-- All scraped ideas include proper attribution with external links to IdeaBrowser
+- All scraped ideas include proper attribution
 - The scraper respects rate limits with delays between requests
 - Duplicate detection prevents re-importing the same ideas
-- Each idea maintains a link back to its original IdeaBrowser page
 - Ideas are scored using your existing scoring algorithm (currently using mock data)
 
 ## ✨ What You Get
 
-Your homepage now features **real, curated startup ideas** from IdeaBrowser's database of 684+ ideas, complete with:
+Your homepage features **curated startup ideas**, complete with:
 - Professional descriptions
 - AI-generated market scores
 - Proper source attribution
