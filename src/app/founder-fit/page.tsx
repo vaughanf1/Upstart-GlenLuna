@@ -162,8 +162,7 @@ export default function FounderFitQuiz() {
       if (response.ok) {
         router.push('/founder-fit/results')
       } else {
-        alert('Please sign in to save your profile')
-        router.push('/auth/signin')
+        alert('Error saving profile. Please try again.')
       }
     } catch (error) {
       console.error('Error saving profile:', error)
