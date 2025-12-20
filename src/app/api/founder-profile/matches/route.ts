@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server'
-import { getAllProfiles, getAllIdeas } from '@/lib/json-db'
-
-// For simplicity, we'll use a default profile ID
-// In a real app with auth, this would be the user's ID
-const DEFAULT_PROFILE_ID = '1'
+import { getAllIdeas } from '@/lib/json-db'
+import { createClient } from '@/lib/supabase/server'
 
 interface FounderProfile {
   id: string
@@ -127,23 +124,52 @@ function calculateFitScore(profile: FounderProfile, idea: Idea): { score: number
 
 export async function GET() {
   try {
-    const profiles = getAllProfiles()
-    // Get the most recent profile (last one in the array)
-    const profile = profiles.length > 0 ? profiles[profiles.length - 1] : null
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!profile) {
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    // Get user's profile from Supabase
+    const { data: profileData, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+
+    if (profileError || !profileData) {
       return NextResponse.json({
         matches: [],
         message: 'Please complete the founder fit quiz first'
       })
     }
 
-    // Get all ideas from the database
+    // Convert snake_case to camelCase for profile
+    const profile: FounderProfile = {
+      id: profileData.id,
+      technicalSkills: profileData.technical_skills || 3,
+      designSkills: profileData.design_skills || 3,
+      marketingSkills: profileData.marketing_skills || 3,
+      salesSkills: profileData.sales_skills || 3,
+      industryExperience: profileData.industry_experience || [],
+      yearsExperience: profileData.years_experience || 0,
+      riskTolerance: profileData.risk_tolerance || 3,
+      timeCommitment: profileData.time_commitment || 'part-time',
+      fundingCapacity: profileData.funding_capacity || 'bootstrapped',
+      preferredBuildTypes: profileData.preferred_build_types || [],
+      preferredTags: profileData.preferred_tags || [],
+    }
+
+    // Get all ideas from the JSON database
     const allIdeas = getAllIdeas()
 
     // Calculate fit scores for all ideas
     const matchedIdeas: MatchedIdea[] = allIdeas.map(idea => {
-      const { score, reason } = calculateFitScore(profile as FounderProfile, idea)
+      const { score, reason } = calculateFitScore(profile, idea)
 
       return {
         ...idea,
@@ -157,6 +183,29 @@ export async function GET() {
       .sort((a, b) => b.fitScore - a.fitScore)
       .slice(0, 12)
 
+    // Save top matches to Supabase
+    // Delete existing matches for this user
+    await supabase
+      .from('matched_ideas')
+      .delete()
+      .eq('user_id', user.id)
+
+    // Insert new matches
+    const matchesToSave = topMatches.map(match => ({
+      user_id: user.id,
+      idea_slug: match.slug,
+      idea_title: match.title,
+      idea_description: match.description || match.summary || '',
+      match_score: match.fitScore,
+      match_reasons: [match.fitReason],
+    }))
+
+    if (matchesToSave.length > 0) {
+      await supabase
+        .from('matched_ideas')
+        .insert(matchesToSave)
+    }
+
     return NextResponse.json({
       matches: topMatches,
       total: allIdeas.length,
@@ -164,9 +213,9 @@ export async function GET() {
         buildTypes: profile.preferredBuildTypes,
         interests: profile.preferredTags,
         skillLevel: Math.max(
-          profile.technicalSkills || 3,
-          profile.designSkills || 3,
-          profile.marketingSkills || 3
+          profile.technicalSkills,
+          profile.designSkills,
+          profile.marketingSkills
         )
       }
     })

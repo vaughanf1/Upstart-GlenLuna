@@ -1,20 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAllProfiles, createProfile, updateProfile } from '@/lib/json-db'
-
-// For simplicity, we'll use a default profile ID
-// In a real app with auth, this would be the user's ID
-const DEFAULT_PROFILE_ID = '1'
+import { createClient } from '@/lib/supabase/server'
 
 export async function GET() {
   try {
-    const profiles = getAllProfiles()
-    const profile = profiles.find(p => p.id === DEFAULT_PROFILE_ID)
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!profile) {
-      return NextResponse.json({ profile: null })
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
 
-    return NextResponse.json(profile)
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+
+    if (error && error.code !== 'PGRST116') {
+      throw error
+    }
+
+    return NextResponse.json(profile || null)
   } catch (error) {
     console.error('Error fetching founder profile:', error)
     return NextResponse.json(
@@ -26,20 +35,43 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
     const body = await request.json()
 
-    const profiles = getAllProfiles()
-    const existingProfile = profiles.find(p => p.id === DEFAULT_PROFILE_ID)
+    const profileData = {
+      id: user.id,
+      email: user.email,
+      technical_skills: body.technicalSkills,
+      design_skills: body.designSkills,
+      marketing_skills: body.marketingSkills,
+      sales_skills: body.salesSkills,
+      industry_experience: body.industryExperience,
+      years_experience: body.yearsExperience,
+      risk_tolerance: body.riskTolerance,
+      time_commitment: body.timeCommitment,
+      funding_capacity: body.fundingCapacity,
+      preferred_build_types: body.preferredBuildTypes,
+      preferred_tags: body.preferredTags,
+      updated_at: new Date().toISOString(),
+    }
 
-    let profile
-    if (existingProfile) {
-      profile = updateProfile(DEFAULT_PROFILE_ID, body)
-    } else {
-      profile = createProfile({
-        ...body,
-        name: body.name || 'Anonymous Founder',
-        email: body.email || 'founder@example.com',
-      })
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .upsert(profileData, { onConflict: 'id' })
+      .select()
+      .single()
+
+    if (error) {
+      throw error
     }
 
     return NextResponse.json({

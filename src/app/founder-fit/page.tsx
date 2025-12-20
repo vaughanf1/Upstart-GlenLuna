@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { createClient } from '@/lib/supabase/client'
+import { useToast } from '@/hooks/use-toast'
 
 interface QuizAnswers {
   technicalSkills: number
@@ -54,6 +56,27 @@ export default function FounderFitQuiz() {
     preferredTags: [],
   })
   const [loading, setLoading] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
+  const { toast } = useToast()
+  const supabase = createClient()
+
+  useEffect(() => {
+    checkAuthentication()
+  }, [])
+
+  const checkAuthentication = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please sign in to take the Founder Fit Quiz',
+        variant: 'destructive',
+      })
+      router.push('/auth/signin?next=/founder-fit')
+    } else {
+      setCheckingAuth(false)
+    }
+  }
 
   const questions = [
     {
@@ -160,16 +183,39 @@ export default function FounderFitQuiz() {
       })
 
       if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Profile saved! Finding your best matches...',
+        })
         router.push('/founder-fit/results')
       } else {
-        alert('Error saving profile. Please try again.')
+        const data = await response.json()
+        toast({
+          title: 'Error',
+          description: data.error || 'Error saving profile. Please try again.',
+          variant: 'destructive',
+        })
       }
     } catch (error) {
       console.error('Error saving profile:', error)
-      alert('Error saving profile. Please try again.')
+      toast({
+        title: 'Error',
+        description: 'Error saving profile. Please try again.',
+        variant: 'destructive',
+      })
     } finally {
       setLoading(false)
     }
+  }
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Checking authentication...</p>
+        </div>
+      </div>
+    )
   }
 
   const toggleArrayItem = <K extends keyof QuizAnswers>(
