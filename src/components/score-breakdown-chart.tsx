@@ -12,8 +12,7 @@ export function ScoreBreakdownChart({ breakdown, className }: ScoreBreakdownChar
     { key: 'community', label: 'Community', value: breakdown.community, weight: 18 },
     { key: 'news', label: 'News', value: breakdown.news, weight: 14 },
     { key: 'competition', label: 'Competition', value: breakdown.competition, weight: 10 },
-    { key: 'quality', label: 'Quality', value: breakdown.quality, weight: 8 },
-  ]
+  ].filter(metric => metric.value !== undefined && !isNaN(metric.value))
 
   const getBarColor = (value: number) => {
     if (value >= 80) return 'bg-green-500'

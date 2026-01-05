@@ -201,19 +201,19 @@ function parseCSVIdeas(): Idea[] {
       const pricingModel = [
         {
           type: 'Starter',
-          price: '$29/month',
+          price: '£29/month',
           target: 'Individual users and very small teams',
           description: 'Essential features to get started: core functionality, standard support, up to 5 users, basic integrations with popular tools, 10GB storage, community support access. Perfect for testing the waters and individual contributors who need professional-grade tools without enterprise overhead.'
         },
         {
           type: 'Professional',
-          price: '$99/month',
+          price: '£99/month',
           target: 'Growing teams (5-20 people)',
           description: 'Everything in Starter plus: advanced automation workflows, priority email support, up to 20 users, unlimited integrations, 100GB storage, advanced analytics and reporting, API access, custom branding options. This tier captures 60-70% of customers—businesses that have outgrown basic tools and need reliability.'
         },
         {
           type: 'Business',
-          price: '$299/month',
+          price: '£299/month',
           target: 'Established teams (20-50 people)',
           description: 'Everything in Professional plus: dedicated account manager, unlimited users, 500GB storage, SSO/SAML authentication, advanced security features, SLA guarantees (99.9% uptime), priority phone support, custom integrations, training sessions for team onboarding. High-margin expansion revenue from companies that need enterprise features.'
         },
@@ -243,12 +243,12 @@ function parseCSVIdeas(): Idea[] {
         {
           phase: 'Phase 2: Launch & Validation',
           timeline: 'Months 5-8',
-          details: 'Public launch with polished onboarding experience and comprehensive documentation. Establish 2-3 repeatable acquisition channels that deliver predictable CAC. Build customer success playbook and proactive engagement strategies. Focus on activation and retention—make sure users see value within first session. Achieve first $20K MRR with healthy unit economics. Collect case studies and testimonials for growth phase. Establish pricing strategy and run experiments to optimize conversion.',
+          details: 'Public launch with polished onboarding experience and comprehensive documentation. Establish 2-3 repeatable acquisition channels that deliver predictable CAC. Build customer success playbook and proactive engagement strategies. Focus on activation and retention—make sure users see value within first session. Achieve first £20K MRR with healthy unit economics. Collect case studies and testimonials for growth phase. Establish pricing strategy and run experiments to optimize conversion.',
           milestones: [
             'Public launch with marketing campaign',
             'Acquire first 100 paying customers',
             'Establish content marketing and SEO foundation',
-            'Achieve $20K MRR with sub-$300 CAC',
+            'Achieve £20K MRR with sub-£300 CAC',
             'Build customer success processes and playbooks',
             'Collect 10+ case studies and video testimonials'
           ]
@@ -256,9 +256,9 @@ function parseCSVIdeas(): Idea[] {
         {
           phase: 'Phase 3: Growth & Scale',
           timeline: 'Months 9-18',
-          details: 'Scale proven acquisition channels while testing new ones. Expand product with features that reduce churn and increase expansion revenue. Build integrations and partnerships that provide distribution. Grow team strategically—add engineering, sales, and customer success capacity. Optimize for net revenue retention above 110% through expansion and reduced churn. Achieve $100K+ MRR with strong growth trajectory. Prepare for Series A fundraising ($3-5M) to accelerate growth and expand market reach.',
+          details: 'Scale proven acquisition channels while testing new ones. Expand product with features that reduce churn and increase expansion revenue. Build integrations and partnerships that provide distribution. Grow team strategically—add engineering, sales, and customer success capacity. Optimize for net revenue retention above 110% through expansion and reduced churn. Achieve £100K+ MRR with strong growth trajectory. Prepare for Series A fundraising ($3-5M) to accelerate growth and expand market reach.',
           milestones: [
-            'Scale to 500+ customers and $100K+ MRR',
+            'Scale to 500+ customers and £100K+ MRR',
             'Expand team to 8-12 across key functions',
             'Launch 5+ strategic integrations and partnerships',
             'Achieve 15-20% MoM revenue growth sustained',
@@ -269,9 +269,9 @@ function parseCSVIdeas(): Idea[] {
         {
           phase: 'Phase 4: Market Leadership',
           timeline: 'Months 19-36',
-          details: 'Dominate core market segment and establish clear leadership position. Build defensible moats through network effects, integrations, and brand strength. Expand into adjacent markets or verticals with proven playbook. International expansion or new customer segments. Develop partner ecosystem and reseller channels. Reach $5M+ ARR with path to $10M clearly defined. Position for Series B, strategic partnership, or profitable growth trajectory based on market conditions.',
+          details: 'Dominate core market segment and establish clear leadership position. Build defensible moats through network effects, integrations, and brand strength. Expand into adjacent markets or verticals with proven playbook. International expansion or new customer segments. Develop partner ecosystem and reseller channels. Reach £5M+ ARR with path to £10M clearly defined. Position for Series B, strategic partnership, or profitable growth trajectory based on market conditions.',
           milestones: [
-            'Reach $5M+ ARR with strong growth trajectory',
+            'Reach £5M+ ARR with strong growth trajectory',
             'Achieve top 3 market position in core segment',
             'Launch in 2-3 adjacent markets or verticals',
             'Build thriving partner and integration ecosystem',
@@ -286,41 +286,41 @@ function parseCSVIdeas(): Idea[] {
         {
           channel: 'Content Marketing & SEO',
           tactics: 'Create 50+ comprehensive guides, tutorials, and comparison pages targeting high-intent keywords. Build SEO authority with technical deep-dives, case studies, and thought leadership. Target long-tail keywords where we can rank quickly. Partner with industry publications for contributed content. Expected to drive 35-40% of qualified signups by month 12 with the lowest CAC of all channels.',
-          investment: '$60K-$100K annually',
+          investment: '£60K-£100K annually',
           timeline: 'Start month 1, compounds over time',
-          expectedCAC: '$80-$120',
+          expectedCAC: '£80-£120',
           expectedROI: '400%+ by year 2'
         },
         {
           channel: 'Community-Led Growth',
           tactics: 'Deep, authentic engagement in Reddit communities, Facebook groups, Slack workspaces, and Discord servers where target users already gather. Provide genuine value, answer questions, share insights. Build relationships with community moderators and influencers. Host virtual events and workshops. This channel delivers the highest quality users at the lowest CAC.',
-          investment: '$30K-$50K annually',
+          investment: '£30K-£50K annually',
           timeline: 'Ongoing from month 1',
-          expectedCAC: '$40-$70',
+          expectedCAC: '£40-£70',
           expectedROI: '500%+ sustained'
         },
         {
           channel: 'Product-Led Growth',
           tactics: 'Generous free tier that provides real value and clear upgrade path. Built-in viral loops: collaboration features, sharing, templates. In-product education with interactive onboarding. Self-serve activation optimized for 5-minute time-to-value. Referral program with incentives for both parties. Email nurture sequences based on usage patterns and behavioral triggers.',
-          investment: '$120K development + $40K ongoing',
+          investment: '£120K development + £40K ongoing',
           timeline: 'Launch month 3, optimize continuously',
-          expectedCAC: '$30-$60',
+          expectedCAC: '£30-£60',
           expectedROI: '600%+ best channel'
         },
         {
           channel: 'Strategic Partnerships',
           tactics: 'Partner with complementary SaaS tools, consultants, agencies, and industry associations. Integration partnerships that provide distribution through partner marketplaces. Co-marketing campaigns with aligned brands. Referral partnerships with service providers. Revenue sharing or affiliate models for ongoing partnerships.',
-          investment: '$50K-$80K (BD time + rev share)',
+          investment: '£50K-£80K (BD time + rev share)',
           timeline: 'Start month 6, scale month 12+',
-          expectedCAC: '$100-$150',
+          expectedCAC: '£100-£150',
           expectedROI: '350%+ expanding'
         },
         {
           channel: 'Paid Acquisition',
           tactics: 'Start small with Google Ads targeting high-intent keywords. LinkedIn Ads for B2B reach and account-based marketing. Retargeting campaigns for engaged visitors. Display ads on industry websites. Only scale after validating organic channels and optimizing conversion funnel. Test, measure, optimize aggressively before scaling spend.',
-          investment: '$150K+ (scale based on performance)',
+          investment: '£150K+ (scale based on performance)',
           timeline: 'Test month 6, scale month 12+ if working',
-          expectedCAC: '$200-$350',
+          expectedCAC: '£200-£350',
           expectedROI: '250-300% when optimized'
         }
       ];

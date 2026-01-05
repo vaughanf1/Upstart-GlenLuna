@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, User, LogOut } from 'lucide-react'
+import { Menu, X, User, LogOut, Bookmark } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -14,21 +14,32 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [user, setUser] = useState<SupabaseUser | null>(null)
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
   const { toast } = useToast()
-  const supabase = createClient()
+  const supabase = useMemo(() => createClient(), [])
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user)
-    })
+    const initAuth = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    initAuth()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
+      setLoading(false)
     })
 
     return () => subscription.unsubscribe()
-  }, [supabase])
+  }, [])
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut()
@@ -99,6 +110,14 @@ export function Header() {
                     >
                       Dashboard
                     </Link>
+                    <Link
+                      href="/dashboard/saved"
+                      onClick={() => setShowUserMenu(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                    >
+                      <Bookmark className="w-4 h-4" />
+                      Saved Ideas
+                    </Link>
                     <button
                       onClick={() => {
                         setShowUserMenu(false)
@@ -112,7 +131,7 @@ export function Header() {
                   </div>
                 )}
               </div>
-            ) : (
+            ) : !loading ? (
               <div className="flex items-center gap-2 ml-2">
                 <Link href="/auth/signin">
                   <Button variant="ghost" size="sm" className="text-sm">
@@ -125,7 +144,7 @@ export function Header() {
                   </Button>
                 </Link>
               </div>
-            )}
+            ) : null}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -163,6 +182,14 @@ export function Header() {
                   <div className="px-3 py-2 text-sm text-gray-500">
                     {user.email}
                   </div>
+                  <Link
+                    href="/dashboard/saved"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-3 py-2 text-sm sm:text-base text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center gap-2"
+                  >
+                    <Bookmark className="w-4 h-4" />
+                    Saved Ideas
+                  </Link>
                   <button
                     onClick={() => {
                       setMobileMenuOpen(false)
@@ -174,7 +201,7 @@ export function Header() {
                     Sign Out
                   </button>
                 </>
-              ) : (
+              ) : !loading ? (
                 <>
                   <div className="border-t my-2" />
                   <Link
@@ -192,7 +219,7 @@ export function Header() {
                     Sign Up
                   </Link>
                 </>
-              )}
+              ) : null}
             </nav>
           </div>
         )}

@@ -56,17 +56,21 @@ export function validateBreakdown(breakdown: Partial<ScoreBreakdown>): ScoreBrea
 }
 
 export function getScoreColor(score: number): string {
-  if (score >= 80) return 'text-green-600'
-  if (score >= 60) return 'text-blue-600'
-  if (score >= 40) return 'text-yellow-600'
-  if (score >= 20) return 'text-orange-600'
+  if (score >= 8) return 'text-green-600'
+  if (score >= 6) return 'text-blue-600'
+  if (score >= 4) return 'text-yellow-600'
+  if (score >= 2) return 'text-orange-600'
   return 'text-red-600'
 }
 
 export function getScoreLabel(score: number): string {
-  if (score >= 80) return 'Excellent'
-  if (score >= 60) return 'Good'
-  if (score >= 40) return 'Fair'
-  if (score >= 20) return 'Poor'
+  if (score >= 9) return 'Exceptional'
+  if (score >= 8) return 'Excellent'
+  if (score >= 7) return 'Strong'
+  if (score >= 6) return 'Good'
+  if (score >= 5) return 'Moderate'
+  if (score >= 4) return 'Fair'
+  if (score >= 3) return 'Below Average'
+  if (score >= 2) return 'Poor'
   return 'Very Poor'
 }
