@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { Heart, Bookmark, Calendar, Star } from 'lucide-react'
+import { Heart, Calendar, Star } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ScoreBadge } from '@/components/score-badge'
+import { BookmarkButton } from '@/components/bookmark-button'
 import { formatDate } from '@/lib/utils'
 
 interface IdeaCardProps {
@@ -20,15 +21,9 @@ interface IdeaCardProps {
     bookmarkCount?: number
   }
   showBookmark?: boolean
-  onBookmark?: (ideaId: string) => void
 }
 
-export function IdeaCard({ idea, showBookmark = false, onBookmark }: IdeaCardProps) {
-  const handleBookmarkClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    onBookmark?.(idea.id)
-  }
+export function IdeaCard({ idea, showBookmark = false }: IdeaCardProps) {
 
   const getDifficultyColor = (difficulty: number) => {
     if (difficulty <= 2) return 'text-green-600 bg-green-50 border-green-200'
@@ -63,18 +58,15 @@ export function IdeaCard({ idea, showBookmark = false, onBookmark }: IdeaCardPro
               </h3>
             </div>
             {showBookmark && (
-              <button
-                onClick={handleBookmarkClick}
-                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-              >
-                <Bookmark
-                  className={`w-5 h-5 ${
-                    idea.isBookmarked
-                      ? 'fill-blue-500 text-blue-500'
-                      : 'text-gray-400 hover:text-blue-500'
-                  }`}
+              <div onClick={(e) => e.preventDefault()}>
+                <BookmarkButton
+                  ideaId={idea.id}
+                  variant="ghost"
+                  size="icon"
+                  className="p-1 h-auto"
+                  showLabel={false}
                 />
-              </button>
+              </div>
             )}
           </div>
         </CardHeader>

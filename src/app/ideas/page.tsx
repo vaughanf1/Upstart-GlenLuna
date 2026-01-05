@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, Grid, List } from 'lucide-react'
+import { Grid, List } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { IdeaCard } from '@/components/idea-card'
 import { FiltersBar, FilterState } from '@/components/filters-bar'
+import { Header } from '@/components/header'
 
 interface Idea {
   id: string
@@ -96,68 +96,32 @@ export default function IdeasPage() {
     setCurrentPage(1)
   }
 
-  const handleBookmark = async (ideaId: string) => {
-    try {
-      const response = await fetch('/api/bookmarks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ideaId }),
-      })
-
-      if (response.ok) {
-        const result = await response.json()
-        setIdeas(prev => prev.map(idea =>
-          idea.id === ideaId
-            ? { ...idea, isBookmarked: result.bookmarked }
-            : idea
-        ))
-      }
-    } catch (error) {
-      console.error('Error toggling bookmark:', error)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b w-full">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 w-full">
-          <div className="flex items-center justify-between h-14 sm:h-16 w-full">
-            <Link href="/" className="flex items-center text-gray-600 hover:text-gray-900 text-xs sm:text-sm md:text-base flex-shrink-0">
-              <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 mr-1 sm:mr-2" />
-              <span className="hidden xs:inline">Back to </span>Home
-            </Link>
-            <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-4">
-              <div className="hidden sm:flex items-center space-x-1 sm:space-x-2 border rounded-lg">
-                <Button
-                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
-                  className="px-2"
-                >
-                  <Grid className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                  className="px-2"
-                >
-                  <List className="w-4 h-4" />
-                </Button>
-              </div>
-              <Link href="/auth/signin" className="hidden sm:inline-block">
-                <Button size="sm">Sign In</Button>
-              </Link>
-              <Link href="/auth/signin" className="sm:hidden">
-                <Button size="sm" className="text-xs px-2 h-8">Sign In</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 md:py-8">
+        {/* View Mode Controls */}
+        <div className="flex justify-end mb-4">
+          <div className="hidden sm:flex items-center space-x-1 sm:space-x-2 border rounded-lg">
+            <Button
+              variant={viewMode === 'grid' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('grid')}
+              className="px-2"
+            >
+              <Grid className="w-4 h-4" />
+            </Button>
+            <Button
+              variant={viewMode === 'list' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('list')}
+              className="px-2"
+            >
+              <List className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
         {/* Page Header */}
         <div className="mb-6 md:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
@@ -235,7 +199,6 @@ export default function IdeasPage() {
                   key={idea.id}
                   idea={idea}
                   showBookmark={true}
-                  onBookmark={handleBookmark}
                 />
               ))}
             </div>
