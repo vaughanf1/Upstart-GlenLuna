@@ -1,28 +1,15 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 
 export function GoogleSignUp({ className }: { className?: string }) {
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
   const { toast } = useToast()
   const supabase = useMemo(() => createClient(), [])
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        router.push('/dashboard')
-      }
-    }
-    checkUser()
-  }, [supabase, router])
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true)
