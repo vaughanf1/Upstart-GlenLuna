@@ -23,12 +23,12 @@ interface Idea {
   title: string
   description: string
   summary?: string
-  difficulty: number
-  buildType: string
-  tags: string[]
-  score: number
-  marketScore: number
-  createdAt: string
+  difficulty?: number
+  buildType?: string
+  tags?: string[]
+  score?: number
+  marketScore?: number
+  createdAt?: string
   pitch?: string
   problem?: string
   solution?: string
@@ -43,15 +43,21 @@ function calculateFitScore(profile: FounderProfile, idea: Idea): { score: number
   let score = 0
   let reasons: string[] = []
 
-  // 1. Build Type Match (30 points)
-  if (profile.preferredBuildTypes.includes(idea.buildType)) {
-    score += 30
-    reasons.push(`matches your preferred ${idea.buildType} build type`)
-  } else if (profile.preferredBuildTypes.length === 0) {
-    score += 15 // Partial credit if no preference specified
+  // 1. Build Type Match (25 points) - Stricter matching
+  if (profile.preferredBuildTypes.length > 0 && idea.buildType) {
+    if (profile.preferredBuildTypes.includes(idea.buildType)) {
+      score += 25
+      reasons.push(`matches your preferred ${idea.buildType} build type`)
+    } else {
+      // Penalize non-matches when user has preferences
+      score += 5
+    }
+  } else {
+    // No preference - neutral score
+    score += 12
   }
 
-  // 2. Tags/Interest Match (25 points)
+  // 2. Tags/Interest Match (30 points) - Increased weight
   const matchingTags = idea.tags?.filter(tag =>
     profile.preferredTags.some(prefTag =>
       tag.toLowerCase().includes(prefTag.toLowerCase()) ||
@@ -59,57 +65,89 @@ function calculateFitScore(profile: FounderProfile, idea: Idea): { score: number
     )
   ) || []
 
-  if (matchingTags.length > 0) {
-    const tagScore = Math.min(25, matchingTags.length * 8)
+  if (profile.preferredTags.length > 0) {
+    const matchRatio = matchingTags.length / Math.max(profile.preferredTags.length, 1)
+    const tagScore = Math.round(matchRatio * 30)
     score += tagScore
-    if (matchingTags.length > 1) {
-      reasons.push(`aligns with your interests in ${matchingTags.slice(0, 2).join(' and ')}`)
-    } else {
-      reasons.push(`matches your ${matchingTags[0]} interest`)
+
+    if (matchingTags.length >= 2) {
+      reasons.push(`strong match with ${matchingTags.slice(0, 2).join(' and ')}`)
+    } else if (matchingTags.length === 1) {
+      reasons.push(`aligns with your ${matchingTags[0]} interest`)
     }
-  }
-
-  // 3. Difficulty vs Technical Skills Match (20 points)
-  const skillLevel = Math.max(
-    profile.technicalSkills,
-    profile.designSkills,
-    profile.marketingSkills
-  )
-
-  // Ideal difficulty is close to skill level
-  const difficultyDelta = Math.abs(idea.difficulty - skillLevel)
-
-  if (difficultyDelta === 0) {
-    score += 20
-    reasons.push('perfect difficulty match for your skill level')
-  } else if (difficultyDelta === 1) {
-    score += 15
-    reasons.push('well-suited to your experience level')
-  } else if (difficultyDelta === 2) {
+  } else {
+    // No preferences - slight neutral score
     score += 10
   }
 
-  // 4. Market Score (15 points) - Higher market scores are better opportunities
-  const marketScoreNormalized = (idea.marketScore || 50) / 100
-  score += marketScoreNormalized * 15
+  // 3. Skill Match (25 points) - More nuanced calculation
+  // Determine relevant skills based on idea characteristics
+  let relevantSkills: number[] = []
 
-  // 5. Time Commitment Match (10 points)
+  // Technical skills always matter
+  relevantSkills.push(profile.technicalSkills)
+
+  // Add other skills based on idea type and tags
+  const requiresDesign = (idea.buildType && ['Mobile App', 'Web App', 'Platform'].includes(idea.buildType)) ||
+                         idea.tags?.some(t => ['Social', 'E-commerce', 'Consumer'].includes(t)) || false
+  const requiresMarketing = idea.tags?.some(t => ['E-commerce', 'Consumer', 'Social'].includes(t)) || false
+  const requiresSales = (idea.buildType && ['SaaS', 'API', 'Tool'].includes(idea.buildType)) ||
+                        idea.tags?.some(t => ['B2B', 'Enterprise', 'SaaS'].includes(t)) || false
+
+  if (requiresDesign) relevantSkills.push(profile.designSkills)
+  if (requiresMarketing) relevantSkills.push(profile.marketingSkills)
+  if (requiresSales) relevantSkills.push(profile.salesSkills)
+
+  const avgRelevantSkills = relevantSkills.reduce((a, b) => a + b, 0) / relevantSkills.length
+
+  // Match difficulty to skill level
+  const ideaDifficulty = idea.difficulty || 3 // Default to medium if not set
+  const difficultyDelta = Math.abs(ideaDifficulty - avgRelevantSkills)
+
+  if (difficultyDelta === 0) {
+    score += 25
+    reasons.push('perfect difficulty match for your skill level')
+  } else if (difficultyDelta <= 0.5) {
+    score += 20
+    reasons.push('well-suited to your skill level')
+  } else if (difficultyDelta <= 1) {
+    score += 15
+  } else if (difficultyDelta <= 1.5) {
+    score += 10
+  } else if (difficultyDelta <= 2) {
+    score += 5
+  }
+  // No points if delta > 2
+
+  // 4. Idea Quality Score (15 points) - Use existing idea metrics
+  const qualityScore = (idea.score || 5) / 10 // Normalize 0-10 to 0-1
+  score += qualityScore * 15
+
+  // 5. Time & Risk Match (5 points)
+  let commitmentScore = 0
+  const ideaDifficultyForCommitment = idea.difficulty || 3
+
   if (profile.timeCommitment === 'full-time') {
-    if (idea.difficulty >= 3) {
-      score += 10
-      reasons.push('requires the full-time commitment you can provide')
+    if (ideaDifficultyForCommitment >= 4) {
+      commitmentScore = 5
+      reasons.push('ideal for full-time commitment')
+    } else if (ideaDifficultyForCommitment >= 3) {
+      commitmentScore = 3
     } else {
-      score += 5
+      commitmentScore = 2
     }
   } else {
     // part-time
-    if (idea.difficulty <= 3) {
-      score += 10
-      reasons.push('manageable with part-time commitment')
+    if (ideaDifficultyForCommitment <= 2) {
+      commitmentScore = 5
+      reasons.push('perfect for part-time work')
+    } else if (ideaDifficultyForCommitment === 3) {
+      commitmentScore = 3
     } else {
-      score += 3
+      commitmentScore = 1
     }
   }
+  score += commitmentScore
 
   // Build reason string
   const reasonText = reasons.length > 0

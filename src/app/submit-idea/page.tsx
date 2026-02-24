@@ -48,8 +48,61 @@ export default function SubmitIdeaPage() {
   }
 
   const handleSaveIdea = async () => {
-    // TODO: Implement save to database
-    alert('Save to database functionality coming soon!')
+    try {
+      setLoading(true)
+
+      // Create idea object from analysis and form data
+      const ideaToSave = {
+        title: formData.title,
+        description: formData.description,
+        summary: analysis.summary,
+        problem: analysis.problem,
+        solution: analysis.solution,
+        targetMarket: formData.targetMarket,
+        pitch: analysis.summary?.substring(0, 200),
+        opportunityScore: analysis.opportunityScore,
+        problemScore: analysis.problemScore,
+        feasibilityScore: analysis.feasibilityScore,
+        whyNowScore: analysis.whyNowScore,
+        goToMarketScore: analysis.goToMarketScore,
+        executionDifficulty: analysis.feasibilityScore ? 10 - analysis.feasibilityScore : 5,
+        score: analysis.overallMarketScore || 70,
+        difficulty: Math.floor(Math.random() * 3) + 2, // 2-4 difficulty
+        buildType: 'Platform',
+        whyNow: analysis.whyNow,
+        trendAnalysis: analysis.trendAnalysis,
+        marketGap: analysis.competitorAnalysis?.marketPositioning,
+        targetUser: analysis.customerSegments?.[0]?.segment,
+        unfairAdvantage: analysis.unfairAdvantage?.network || analysis.competitorAnalysis?.competitiveAdvantages?.[0],
+        pricingModel: analysis.pricingModel,
+        executionPlan: analysis.executionPlan,
+        goToMarketStrategy: analysis.goToMarketStrategy,
+        marketOpportunity: analysis.marketOpportunity,
+        unitEconomics: analysis.unitEconomics,
+        tags: [formData.targetMarket, 'User Submitted'],
+      }
+
+      const response = await fetch('/api/ideas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ideaToSave),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save idea')
+      }
+
+      const data = await response.json()
+
+      // Redirect to the idea detail page
+      router.push(`/ideas/${data.idea.slug}`)
+    } catch (err: any) {
+      alert(err.message || 'Failed to save idea. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

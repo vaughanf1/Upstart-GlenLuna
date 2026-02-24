@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge'
 import { ScoreBadge } from '@/components/score-badge'
 import { ScoreBreakdownChart } from '@/components/score-breakdown-chart'
 import { SourceList } from '@/components/source-list'
+import { BookmarkButton } from '@/components/bookmark-button'
+import { ShareButton } from '@/components/share-button'
 import { formatDate } from '@/lib/utils'
 
 function getIdea(slug: string) {
@@ -94,21 +96,35 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
               <span className="hidden xs:inline">Back to </span>Ideas
             </Link>
             <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
-              <Button variant="outline" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm">
-                <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" />
-                Share
-              </Button>
-              <Button variant="outline" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm">
-                <Bookmark className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" />
-                Bookmark
-              </Button>
+              <ShareButton
+                title={idea.title}
+                description={idea.summary || idea.description}
+                variant="outline"
+                size="sm"
+                className="hidden sm:inline-flex text-xs sm:text-sm"
+              />
+              <BookmarkButton
+                ideaId={idea.id}
+                variant="outline"
+                size="sm"
+                className="hidden sm:inline-flex text-xs sm:text-sm"
+              />
               {/* Mobile - Icon only */}
-              <Button variant="outline" size="sm" className="sm:hidden px-1.5 h-8">
-                <Share2 className="w-3.5 h-3.5" />
-              </Button>
-              <Button variant="outline" size="sm" className="sm:hidden px-1.5 h-8">
-                <Bookmark className="w-3.5 h-3.5" />
-              </Button>
+              <ShareButton
+                title={idea.title}
+                description={idea.summary || idea.description}
+                variant="outline"
+                size="sm"
+                className="sm:hidden px-1.5 h-8"
+                showLabel={false}
+              />
+              <BookmarkButton
+                ideaId={idea.id}
+                variant="outline"
+                size="sm"
+                className="sm:hidden px-1.5 h-8"
+                showLabel={false}
+              />
             </div>
           </div>
         </div>
@@ -548,14 +564,21 @@ async function IdeaDetailContent({ slug }: { slug: string }) {
 
             {/* Action Buttons */}
             <div className="space-y-3 hidden lg:block">
-              <Button size="lg" className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700">
-                <Bookmark className="w-5 h-5 mr-2" />
-                Bookmark This Idea
-              </Button>
-              <Button variant="outline" size="lg" className="w-full">
-                <Share2 className="w-5 h-5 mr-2" />
-                Share Idea
-              </Button>
+              <BookmarkButton
+                ideaId={idea.id}
+                variant="default"
+                size="lg"
+                className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
+              />
+              <ShareButton
+                title={idea.title}
+                description={idea.summary || idea.description}
+                variant="outline"
+                size="lg"
+                className="w-full"
+                label="Share Idea"
+                copiedLabel="Link Copied!"
+              />
             </div>
           </div>
         </div>

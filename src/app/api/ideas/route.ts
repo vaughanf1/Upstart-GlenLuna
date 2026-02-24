@@ -88,9 +88,22 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const idea = createIdea(body)
 
-    return NextResponse.json(idea, { status: 201 })
+    // Create slug from title
+    const slug = body.title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .substring(0, 100)
+
+    const ideaData = {
+      ...body,
+      slug: slug || `idea-${Date.now()}`,
+    }
+
+    const idea = createIdea(ideaData)
+
+    return NextResponse.json({ success: true, idea }, { status: 201 })
   } catch (error) {
     console.error('Error creating idea:', error)
     return NextResponse.json(

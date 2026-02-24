@@ -1,18 +1,16 @@
-import Link from 'next/link'
 import Image from 'next/image'
-import { TrendingUp, Search, Users, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { TrendingUp, Search, Users, Target, Sparkles, BarChart3, Lock, ArrowRight } from 'lucide-react'
 import { getAllIdeas } from '@/lib/json-db'
 import { ScoreBadge } from '@/components/score-badge'
-import { Header } from '@/components/header'
+import { GoogleSignUp } from '@/components/google-sign-up'
 
 export default async function HomePage() {
-  // Fetch featured ideas (top 3 by score)
   const allIdeas = getAllIdeas()
   const featuredIdeas = allIdeas
     .sort((a, b) => (b.marketScore || 0) - (a.marketScore || 0))
     .slice(0, 3)
+
+  const totalIdeas = allIdeas.length
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -25,187 +23,172 @@ export default async function HomePage() {
       />
       <div className="fixed inset-0 -z-10 bg-white/40" />
 
-      {/* Header */}
-      <Header />
+      {/* Minimal Header — Logo Only */}
+      <header className="py-6 px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <Image
+            src="/glenluna.png"
+            alt="Glen Luna"
+            width={140}
+            height={48}
+            className="h-10 sm:h-12 w-auto"
+            priority
+          />
+        </div>
+      </header>
 
-      {/* Hero Section */}
-      <section className="relative py-16 md:py-24 px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-black mb-6 md:mb-8 leading-tight tracking-tight">
-            Discover profitable startup ideas{' '}
+      {/* Hero Section with Sign-Up CTA */}
+      <section className="py-12 md:py-20 px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-black/5 rounded-full px-4 py-2 mb-8">
+            <Sparkles className="w-4 h-4 text-black/60" />
+            <span className="text-sm font-medium text-black/70">Data-driven startup discovery</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-6 leading-[1.1] tracking-tight">
+            Find your next{' '}
             <span className="relative inline-block">
-              <span className="relative z-10">powered by data</span>
-              <span className="absolute bottom-2 left-0 right-0 h-4 bg-glenluna-yellow/50 -z-0"></span>
+              <span className="relative z-10">startup idea</span>
+              <span className="absolute bottom-1 sm:bottom-2 left-0 right-0 h-3 sm:h-4 bg-glenluna-yellow/60 -z-0"></span>
             </span>
+            , backed by data
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-black/70 mb-8 md:mb-10 max-w-2xl mx-auto font-medium">
-            Get ideas for profitable startups, trending keywords, and go-to-market tactics,
-            all validated with real-time market signals and scoring.
+
+          <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl mx-auto leading-relaxed">
+            Get instant access to {totalIdeas}+ scored startup ideas, personalised founder matching, and AI-powered analysis tools.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/idea-of-the-day">
-              <Button size="lg" className="bg-black text-white hover:bg-black/90 rounded-xl px-8 py-6 text-lg font-semibold">
-                View Today's Idea
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link href="/ideas">
-              <Button size="lg" variant="outline" className="border-2 border-black text-black hover:bg-black hover:text-white rounded-xl px-8 py-6 text-lg font-semibold">
-                Browse All Ideas
-              </Button>
-            </Link>
-          </div>
+
+          <GoogleSignUp className="flex flex-col items-center" />
+
+          <p className="text-xs text-black/40 mt-6 max-w-xs mx-auto">
+            Free to join. We&apos;ll never spam you or share your data.
+          </p>
         </div>
       </section>
 
-      {/* Stats Section - Black Background */}
-      <section className="py-12 md:py-16 px-3 sm:px-4 md:px-6 lg:px-8 bg-black text-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
-            <div className="text-center">
-              <h3 className="text-4xl md:text-5xl font-bold mb-2">30+</h3>
-              <p className="text-xl text-white/80">Startups funded</p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-4xl md:text-5xl font-bold mb-2">£15m+</h3>
-              <p className="text-xl text-white/80">Money raised</p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-4xl md:text-5xl font-bold mb-2">14 weeks</h3>
-              <p className="text-xl text-white/80">Average time to close</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
+      {/* What You Get Section */}
       <section className="py-16 md:py-24 px-3 sm:px-4 md:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-semibold uppercase tracking-wider text-black/60 mb-4">Focus on what really counts</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-6 leading-tight max-w-3xl mx-auto">
-              Data-Driven Idea Discovery Powered by Real Market Signals
+            <p className="text-sm font-semibold uppercase tracking-wider text-black/50 mb-4">What you get</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black leading-tight">
+              Everything you need to start
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
-            <Card className="border-2 border-black/10 hover:border-black/30 transition-all rounded-2xl">
-              <CardHeader>
-                <div className="w-14 h-14 bg-glenluna-yellow rounded-2xl flex items-center justify-center mb-4">
-                  <TrendingUp className="w-7 h-7 text-black" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-black">Market Trends</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-black/70 text-base leading-relaxed">
-                  Track 12-month trend slopes and volatility to identify emerging opportunities
-                  before they become saturated.
-                </p>
-              </CardContent>
-            </Card>
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+            <div className="bg-gray-50 rounded-2xl p-8 border border-black/5">
+              <div className="w-12 h-12 bg-glenluna-yellow rounded-xl flex items-center justify-center mb-5">
+                <BarChart3 className="w-6 h-6 text-black" />
+              </div>
+              <h3 className="text-xl font-bold text-black mb-3">{totalIdeas}+ Scored Ideas</h3>
+              <p className="text-black/60 leading-relaxed">
+                Every idea is ranked 0–100 using real market signals — search volume, trends, community buzz, and competitive landscape.
+              </p>
+            </div>
 
-            <Card className="border-2 border-black/10 hover:border-black/30 transition-all rounded-2xl">
-              <CardHeader>
-                <div className="w-14 h-14 bg-glenluna-purple rounded-2xl flex items-center justify-center mb-4">
-                  <Search className="w-7 h-7 text-white" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-black">Search Intelligence</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-black/70 text-base leading-relaxed">
-                  Analyze search volume, growth rates, and keyword opportunities to validate
-                  market demand and size.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-gray-50 rounded-2xl p-8 border border-black/5">
+              <div className="w-12 h-12 bg-glenluna-purple rounded-xl flex items-center justify-center mb-5">
+                <Target className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-black mb-3">Personalised Matches</h3>
+              <p className="text-black/60 leading-relaxed">
+                Take the Founder Fit Quiz to discover which ideas match your skills, experience, and risk appetite.
+              </p>
+            </div>
 
-            <Card className="border-2 border-black/10 hover:border-black/30 transition-all rounded-2xl">
-              <CardHeader>
-                <div className="w-14 h-14 bg-black rounded-2xl flex items-center justify-center mb-4">
-                  <Users className="w-7 h-7 text-white" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-black">Community Signals</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-black/70 text-base leading-relaxed">
-                  Monitor Reddit, Hacker News, and other communities to gauge real user
-                  interest and engagement levels.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-gray-50 rounded-2xl p-8 border border-black/5">
+              <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center mb-5">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-black mb-3">AI-Powered Analysis</h3>
+              <p className="text-black/60 leading-relaxed">
+                Submit your own idea and get a full VC-level breakdown — market size, competition, go-to-market strategy, and financial projections.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Ideas */}
+      {/* Featured Ideas Preview (Teaser) */}
       {featuredIdeas.length > 0 && (
         <section className="py-16 md:py-24 px-3 sm:px-4 md:px-6 lg:px-8 bg-gray-50">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12 md:mb-16">
-              <p className="text-sm font-semibold uppercase tracking-wider text-black/60 mb-4">What we're tracking</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-black/50 mb-4">Sneak peek</p>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-4 leading-tight">
-                Featured Startup Ideas
+                Top-scored ideas this week
               </h2>
-              <p className="text-lg sm:text-xl text-black/70 max-w-2xl mx-auto">
-                Curated ideas ranked by market potential
+              <p className="text-lg text-black/60 max-w-lg mx-auto">
+                Sign up to unlock full details, analysis, and execution plans.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="grid md:grid-cols-3 gap-6">
               {featuredIdeas.map((idea) => (
-                <Card key={idea.id} className="border-2 border-black/10 hover:border-black/30 transition-all rounded-2xl bg-white">
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-2">
-                      <ScoreBadge score={idea.marketScore || 0} size="sm" />
-                    </div>
-                    <CardTitle className="text-xl font-bold text-black line-clamp-2">
-                      {idea.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-black/70 text-base line-clamp-3 mb-4">
-                      {idea.description.slice(0, 150)}...
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {idea.tags?.slice(0, 3).map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 bg-black text-white text-xs font-medium rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <Link href={`/ideas/${idea.slug}`}>
-                      <Button variant="outline" size="sm" className="w-full border-2 border-black text-black hover:bg-black hover:text-white rounded-xl font-semibold">
-                        View Details
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                <div
+                  key={idea.id}
+                  className="bg-white rounded-2xl p-6 border border-black/5 relative overflow-hidden"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <ScoreBadge score={idea.marketScore || 0} size="sm" />
+                  </div>
+                  <h3 className="text-lg font-bold text-black mb-3 line-clamp-2">
+                    {idea.title}
+                  </h3>
+                  <p className="text-black/50 text-sm line-clamp-2 mb-4">
+                    {idea.description.slice(0, 80)}...
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {idea.tags?.slice(0, 3).map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2.5 py-1 bg-black/5 text-black/60 text-xs font-medium rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
 
-            <div className="text-center">
-              <Link href="/ideas">
-                <Button variant="outline" size="lg" className="border-2 border-black text-black hover:bg-black hover:text-white rounded-xl px-8 py-6 text-lg font-semibold">
-                  Browse All Ideas
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
+                  {/* Locked overlay */}
+                  <div className="flex items-center gap-2 text-sm text-black/40 pt-3 border-t border-black/5">
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Sign up to view full analysis</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
       )}
 
+      {/* Social Proof / Stats */}
+      <section className="py-12 md:py-16 px-3 sm:px-4 md:px-6 lg:px-8 bg-black text-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-3 gap-4 md:gap-12">
+            <div className="text-center">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2">30+</h3>
+              <p className="text-sm sm:text-lg text-white/70">Startups funded</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2">&pound;15m+</h3>
+              <p className="text-sm sm:text-lg text-white/70">Money raised</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2">14 wks</h3>
+              <p className="text-sm sm:text-lg text-white/70">Avg. time to close</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section className="py-16 md:py-24 px-3 sm:px-4 md:px-6 lg:px-8 bg-white">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-semibold uppercase tracking-wider text-black/60 mb-4">How it works</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-6 leading-tight">
-              Our scoring algorithm analyzes multiple data sources
+            <p className="text-sm font-semibold uppercase tracking-wider text-black/50 mb-4">How it works</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black leading-tight">
+              From data to your next big move
             </h2>
           </div>
 
@@ -215,12 +198,11 @@ export default async function HomePage() {
                 1
               </div>
               <div className="flex-1">
-                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2 md:mb-3">
-                  Data Collection
+                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2">
+                  We gather real market signals
                 </h3>
-                <p className="text-base sm:text-lg text-black/70 leading-relaxed">
-                  We gather signals from Google Trends, search volume data, community discussions,
-                  news coverage, and competitive analysis.
+                <p className="text-base sm:text-lg text-black/60 leading-relaxed">
+                  Google Trends, search volume, Reddit, Hacker News, news coverage, and competitive analysis — all processed daily.
                 </p>
               </div>
             </div>
@@ -230,12 +212,11 @@ export default async function HomePage() {
                 2
               </div>
               <div className="flex-1">
-                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2 md:mb-3">
-                  Smart Scoring
+                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2">
+                  Every idea gets a score
                 </h3>
-                <p className="text-base sm:text-lg text-black/70 leading-relaxed">
-                  Each signal is normalized and weighted to create a comprehensive score from 0-100,
-                  highlighting the most promising opportunities.
+                <p className="text-base sm:text-lg text-black/60 leading-relaxed">
+                  Our algorithm weighs each signal to produce a 0–100 market score, highlighting the most promising opportunities.
                 </p>
               </div>
             </div>
@@ -245,12 +226,11 @@ export default async function HomePage() {
                 3
               </div>
               <div className="flex-1">
-                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2 md:mb-3">
-                  Actionable Insights
+                <h3 className="text-xl sm:text-2xl font-bold text-black mb-2">
+                  You get actionable insights
                 </h3>
-                <p className="text-base sm:text-lg text-black/70 leading-relaxed">
-                  Get detailed breakdowns, source links, and "why now" analysis to help you
-                  make informed decisions about your next project.
+                <p className="text-base sm:text-lg text-black/60 leading-relaxed">
+                  Detailed breakdowns, pricing models, execution plans, and &ldquo;why now&rdquo; analysis — everything you need to make your move.
                 </p>
               </div>
             </div>
@@ -258,63 +238,33 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section - Yellow Background */}
+      {/* Bottom CTA */}
       <section className="py-16 md:py-24 px-3 sm:px-4 md:px-6 lg:px-8 bg-glenluna-yellow">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-6 leading-tight">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-4 leading-tight">
             Ready to find your next big idea?
           </h2>
-          <p className="text-lg sm:text-xl md:text-2xl text-black/80 mb-8 md:mb-10 font-medium">
-            Join thousands of entrepreneurs discovering data-driven opportunities.
+          <p className="text-lg sm:text-xl text-black/70 mb-10 font-medium">
+            Join founders discovering data-driven opportunities. Free to sign up.
           </p>
-          <Link href="/idea-of-the-day">
-            <Button size="lg" className="bg-black text-white hover:bg-black/90 rounded-xl px-8 py-6 text-lg font-semibold">
-              Start with Today's Idea
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
+
+          <GoogleSignUp className="flex flex-col items-center" />
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-black text-white py-16 px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-12">
-            <div>
-              <div className="mb-6">
-                <Image
-                  src="/glenluna.png"
-                  alt="Glen Luna"
-                  width={140}
-                  height={48}
-                  className="h-10 w-auto brightness-0 invert"
-                />
-              </div>
-              <p className="text-white/70 leading-relaxed">
-                Discover profitable startup ideas powered by real-time market data.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-lg mb-4">Explore</h4>
-              <ul className="space-y-3 text-white/70">
-                <li><Link href="/idea-of-the-day" className="hover:text-white transition-colors">Idea of the Day</Link></li>
-                <li><Link href="/ideas" className="hover:text-white transition-colors">Browse Ideas</Link></li>
-                <li><Link href="/founder-fit" className="hover:text-white transition-colors">Founder Fit Quiz</Link></li>
-                <li><Link href="/ideas?sortBy=marketScore" className="hover:text-white transition-colors">Top Scored</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-lg mb-4">Company</h4>
-              <ul className="space-y-3 text-white/70">
-                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-white/10 pt-8 text-center text-white/60">
-            <p>&copy; 2025 Glen Luna. All rights reserved.</p>
-          </div>
+      {/* Minimal Footer */}
+      <footer className="bg-black text-white py-8 px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Image
+            src="/glenluna.png"
+            alt="Glen Luna"
+            width={100}
+            height={34}
+            className="h-7 w-auto brightness-0 invert"
+          />
+          <p className="text-sm text-white/50">
+            &copy; 2025 Glen Luna. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

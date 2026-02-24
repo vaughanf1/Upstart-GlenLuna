@@ -65,15 +65,24 @@ export default function FounderFitQuiz() {
   }, [])
 
   const checkAuthentication = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        toast({
+          title: 'Authentication Required',
+          description: 'Please sign in to take the Founder Fit Quiz',
+          variant: 'destructive',
+        })
+        router.push('/auth/signin?next=/founder-fit')
+      }
+    } catch (error) {
+      console.error('Authentication check failed:', error)
       toast({
-        title: 'Authentication Required',
-        description: 'Please sign in to take the Founder Fit Quiz',
+        title: 'Error',
+        description: 'Failed to check authentication. Please try again.',
         variant: 'destructive',
       })
-      router.push('/auth/signin?next=/founder-fit')
-    } else {
+    } finally {
       setCheckingAuth(false)
     }
   }

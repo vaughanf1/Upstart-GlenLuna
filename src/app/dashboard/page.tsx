@@ -4,7 +4,7 @@ import { Header } from '@/components/header'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowRight, Sparkles, TrendingUp } from 'lucide-react'
+import { ArrowRight, Sparkles, TrendingUp, Bookmark } from 'lucide-react'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -105,11 +105,25 @@ export default async function DashboardPage() {
         )}
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Link href="/dashboard/saved">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+              <CardHeader>
+                <Bookmark className="w-8 h-8 text-blue-600 mb-2" />
+                <CardTitle className="text-lg">Saved Ideas</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600">
+                  View all your bookmarked startup ideas
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
           <Link href="/ideas">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
               <CardHeader>
-                <TrendingUp className="w-8 h-8 text-blue-600 mb-2" />
+                <TrendingUp className="w-8 h-8 text-green-600 mb-2" />
                 <CardTitle className="text-lg">Browse All Ideas</CardTitle>
               </CardHeader>
               <CardContent>
