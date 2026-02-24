@@ -60,8 +60,8 @@ export default async function HomePage() {
 
           <GoogleSignUp className="flex flex-col items-center" />
 
-          <p className="text-xs text-black/40 mt-6 max-w-xs mx-auto">
-            Free to join. We&apos;ll never spam you or share your data.
+          <p className="text-sm text-black/50 mt-6 max-w-xs mx-auto font-medium">
+            Completely free. No credit card required.
           </p>
         </div>
       </section>
@@ -245,7 +245,7 @@ export default async function HomePage() {
             Ready to find your next big idea?
           </h2>
           <p className="text-lg sm:text-xl text-black/70 mb-10 font-medium">
-            Join founders discovering data-driven opportunities. Free to sign up.
+            Completely free. No credit card required. Join in 10 seconds.
           </p>
 
           <GoogleSignUp className="flex flex-col items-center" />
